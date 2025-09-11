@@ -33,7 +33,7 @@ export default function CalendarSection() {
           <label className='block mb-2 font-normal text-[20px] ml-2'>Where do you dream of going?</label>
           <div className='relative'>
             <select
-              className='w-full appearance-none bg-white rounded-md p-4 text-[#989898] text-[14px] sm:text-[18px] border border-[#98B6E2] pr-10'
+              className='w-full appearance-none bg-white rounded-md p-4 text-[#989898] text-[14px] lg:text-[18px] border border-[#98B6E2] pr-10'
               onFocus={() => setIsDestinationOpen(true)}
               onBlur={() => setIsDestinationOpen(false)}
             >
@@ -53,7 +53,7 @@ export default function CalendarSection() {
           <label className='block mb-2 font-normal text-[20px] ml-2'>Who’s traveling?</label>
           <div className='relative'>
             <select
-              className='w-full appearance-none bg-white rounded-md p-4 text-[#989898] text-[14px] sm:text-[18px] border border-[#98B6E2] pr-10'
+              className='w-full appearance-none bg-white rounded-md p-4 text-[#989898] text-[14px] lg:text-[18px] border border-[#98B6E2] pr-10'
               onFocus={() => setIsTravelersOpen(true)}
               onBlur={() => setIsTravelersOpen(false)}
             >
