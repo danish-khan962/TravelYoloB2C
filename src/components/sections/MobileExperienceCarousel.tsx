@@ -53,7 +53,7 @@ const MobileExperienceCarousel: React.FC<MobileExperienceCarouselProps> = ({
   };
 
   const handleProgress = (swiper: SwiperType, progress: number) => {
-    setProgress(progress * (destinations.length - 1));
+    setProgress(progress);
   };
 
   const handleSlideChangeTransitionStart = (swiper: SwiperType) => {
@@ -157,11 +157,11 @@ const MobileExperienceCarousel: React.FC<MobileExperienceCarouselProps> = ({
                         <h3 className="text-[14px] font-host-grotesk font-medium leading-[18px] text-black flex-1 line-clamp-3">
                           {typeof experience.title === 'string'
                             ? experience.title.split('||').map((line, idx) => (
-                              <React.Fragment key={idx}>
-                                {line}
-                                {idx !== experience.title.split('||').length - 1 && <br />}
-                              </React.Fragment>
-                            ))
+                                <React.Fragment key={idx}>
+                                  {line}
+                                  {idx !== experience.title.split('||').length - 1 && <br />}
+                                </React.Fragment>
+                              ))
                             : null}
                         </h3>
                         {experience.duration && (
@@ -179,40 +179,40 @@ const MobileExperienceCarousel: React.FC<MobileExperienceCarouselProps> = ({
         </div>
       </section>
 
-      <div className="relative z-20 flex justify-center items-center w-full -mt-28 pointer-events-auto">
-        <div className="flex justify-center items-center gap-2">
-          <button
-            className="swiper-button-prev-custom w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Previous slide"
-            onClick={handlePrevSlide}
-          >
-            <Image src="/images/img_xmlid_222.svg" alt="Previous" width={8} height={14} />
-            <Image src="/images/img_xmlid_222.svg" alt="Previous" width={8} height={14} />
-          </button>
+      {/* Navigation + Progress bar */}
+      <div className="relative z-20 flex justify-center items-center w-full -mt-28 pointer-events-auto px-4">
+        <button
+          className="swiper-button-prev-custom w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
+          aria-label="Previous slide"
+          onClick={handlePrevSlide}
+        >
+          <Image src="/images/img_xmlid_222.svg" alt="Previous" width={8} height={14} />
+          <Image src="/images/img_xmlid_222.svg" alt="Previous" width={8} height={14} />
+        </button>
 
-          <div className="flex flex-col justify-start items-start ml-3 mt-1">
-            <div className="swiper-pagination-custom h-1 w-full max-w-[300px] bg-[#E7E7E7] rounded-full relative overflow-hidden">
-              <div
-                className="absolute top-0 left-0 h-full bg-black rounded-full transition-all duration-300 ease-out"
-                style={{
-                  width: `${(progress / (destinations.length - 1)) * 100}%`,
-                }}
-              />
-            </div>
+        {/* Progress Bar */}
+        <div className="flex-1 mx-4 max-w-[300px] w-full">
+          <div className="w-full h-[3px] bg-[#E7E7E7] rounded-full relative overflow-hidden">
+            <div
+              className="absolute top-0 left-0 h-full bg-black rounded-full transition-all duration-300 ease-out"
+              style={{
+                width: `${progress * 100}%`,
+              }}
+            />
           </div>
-
-
-          <button
-            className="swiper-button-next-custom w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Next slide"
-            onClick={handleNextSlide}
-          >
-            <Image src="/images/img_arrow_right.svg" alt="Next" width={8} height={14} />
-            <Image src="/images/img_arrow_right.svg" alt="Next" width={8} height={14} />
-          </button>
         </div>
+
+        <button
+          className="swiper-button-next-custom w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
+          aria-label="Next slide"
+          onClick={handleNextSlide}
+        >
+          <Image src="/images/img_arrow_right.svg" alt="Next" width={8} height={14} />
+          <Image src="/images/img_arrow_right.svg" alt="Next" width={8} height={14} />
+        </button>
       </div>
 
+      {/* Global Styles */}
       <style jsx global>{`
         .signature-experiences-swiper {
           overflow: visible !important;
@@ -235,12 +235,6 @@ const MobileExperienceCarousel: React.FC<MobileExperienceCarouselProps> = ({
 
         .signature-experiences-swiper .swiper-slide-active {
           z-index: 10;
-        }
-
-        .swiper-pagination-custom .swiper-pagination-progressbar-fill {
-          background: var(--global-4) !important;
-          border-radius: 9999px;
-          transition: transform 0.3s ease-out !important;
         }
       `}</style>
     </div>

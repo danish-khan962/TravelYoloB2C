@@ -52,10 +52,10 @@ const CuratedProcessSection: React.FC = () => {
         <section className="w-full bg-global-10 py-[60px] sm:py-[80px] lg:py-[120px]">
             <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
                 <div className="flex flex-col gap-6 sm:gap-8 lg:gap-16">
-                    <h2 className="text-[30px] sm:text-[35px] lg:text-[40px] font-light italic leading-[40px] sm:leading-[45px] lg:leading-[55px] text-global-1 font-noto-serif text-start sm:text-center lg:text-left w-[80%]">
+                    <h2 className="text-[30px] sm:text-[35px] lg:text-[40px] font-light italic leading-[40px] sm:leading-[45px] lg:leading-[55px] text-global-1 font-noto-serif text-start lg:text-left w-[80%]">
                         Curated. Seamless. Deeply Personal.
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-6">
                         {processSteps.map((step) => (
                             <div
                                 key={step.id}

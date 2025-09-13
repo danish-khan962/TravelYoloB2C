@@ -35,7 +35,6 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
 
   const initialSlideIndex = 3;
 
-  // Fetch JSON data from public folder on mount
   useEffect(() => {
     async function fetchData() {
       try {
@@ -52,7 +51,6 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
 
   const getYTransform = (slideIndex: number) => {
     const diff = slideIndex - activeIndex;
-
     switch (diff) {
       case -1:
         return "translateY(-50px)";
@@ -83,16 +81,16 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
     }
   };
 
+  // Update activeIndex on slide change
   const handleSlideChange = (swiper: SwiperType) => {
     setActiveIndex(swiper.activeIndex);
   };
 
-  const handleProgress = (swiper: SwiperType, progress: number) => {
-    setProgress(progress * (displayData.length - 1));
-  };
-
-  const handleSlideChangeTransitionStart = (swiper: SwiperType) => {
-    setActiveIndex(swiper.activeIndex);
+  // Update progress smoothly using onProgress event
+  const handleProgress = (swiper: SwiperType, progressValue: number) => {
+    // Clamp progress between 0 and 1
+    const clamped = Math.min(Math.max(progressValue, 0), 1);
+    setProgress(clamped);
   };
 
   const [isLoop, setIsLoop] = useState(false);
@@ -107,19 +105,18 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
     return () => window.removeEventListener("resize", updateLoop);
   }, []);
 
-  // Helper function to render title with <br /> where "||" exists
-  const renderTitleWithBreaks = (title: string) => {
-    return title.split("||").map((line, idx, arr) => (
+  // Helper for rendering titles with line breaks
+  const renderTitleWithBreaks = (title: string) =>
+    title.split("||").map((line, idx, arr) => (
       <React.Fragment key={idx}>
         {line}
         {idx < arr.length - 1 && <br />}
       </React.Fragment>
     ));
-  };
 
   return (
-    <div className=" hidden sm:block w-full">
-      <section className=" w-full mt-[37px] sm:mt-[52px] lg:mt-[74px]">
+    <div className="hidden sm:block w-full">
+      <section className="w-full mt-[37px] sm:mt-[52px] lg:mt-[74px]">
         <div id="sig-carousel" className="px-0 py-24 sm:py-28 lg:py-36">
           <div
             className="relative overflow-visible"
@@ -173,12 +170,11 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
                 swiperRef.current = swiper;
               }}
               onSlideChange={handleSlideChange}
-              onSlideChangeTransitionStart={handleSlideChangeTransitionStart}
               onProgress={handleProgress}
               onInit={(swiper) => {
                 swiper.slideTo(initialSlideIndex, 0);
                 setActiveIndex(initialSlideIndex);
-                handleSlideChange(swiper);
+                setProgress(swiper.progress ?? 0);
               }}
             >
               {displayData.map((experience, index) => (
@@ -227,57 +223,64 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
         </div>
       </section>
 
-      <div className="relative z-20 flex justify-center items-center w-full -mt-16 pointer-events-auto">
-        <div className="flex justify-center items-center gap-2 sm:gap-3 lg:gap-4">
-          <button
-            className="swiper-button-prev-custom w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Previous slide"
-            aria-controls="sig-carousel"
-            onClick={handlePrevSlide}
-          >
-            <Image
-              src="/images/img_xmlid_222.svg"
-              alt="Previous"
-              width={8}
-              height={14}
-              className="w-2 h-3.5"
-            />
-            <Image
-              src="/images/img_xmlid_222.svg"
-              alt="Previous"
-              width={8}
-              height={14}
-              className="w-2 h-3.5"
-            />
-          </button>
+      {/* Navigation + Progress bar */}
+      <div className="relative z-20 flex justify-center items-center w-full -mt-12 pointer-events-auto px-4">
+        <button
+          className="swiper-button-prev-custom w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
+          aria-label="Previous slide"
+          onClick={handlePrevSlide}
+        >
+          <Image src="/images/img_xmlid_222.svg" alt="Previous" width={8} height={14} />
+          <Image src="/images/img_xmlid_222.svg" alt="Previous" width={8} height={14} />
+        </button>
 
-          <div className="flex flex-col justify-start items-start ml-3 sm:ml-4 lg:ml-[18px] mt-1 lg:mt-[4px]">
-            <div className="swiper-pagination-custom h-1 w-[145px] sm:w-[203px] lg:w-[290px] bg-global-7 mr-3 sm:mr-4 lg:mr-[18px] rounded-full"></div>
+        {/* Progress Bar */}
+        <div className="flex-1 mx-4 max-w-[300px] w-full">
+          <div className="w-full h-[3px] bg-[#E7E7E7] rounded-full relative overflow-hidden">
+            <div
+              className="absolute top-0 left-0 h-full bg-black rounded-full transition-all duration-300 ease-out"
+              style={{
+                width: `${progress * 100}%`,
+              }}
+            />
           </div>
-
-          <button
-            className="swiper-button-next-custom w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Next slide"
-            aria-controls="sig-carousel"
-            onClick={handleNextSlide}
-          >
-            <Image
-              src="/images/img_arrow_right.svg"
-              alt="Next"
-              width={8}
-              height={14}
-              className="w-2 h-3.5"
-            />
-            <Image
-              src="/images/img_arrow_right.svg"
-              alt="Next"
-              width={8}
-              height={14}
-              className="w-2 h-3.5"
-            />
-          </button>
         </div>
+
+        <button
+          className="swiper-button-next-custom w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
+          aria-label="Next slide"
+          onClick={handleNextSlide}
+        >
+          <Image src="/images/img_arrow_right.svg" alt="Next" width={8} height={14} />
+          <Image src="/images/img_arrow_right.svg" alt="Next" width={8} height={14} />
+        </button>
       </div>
+
+      {/* Global Styles */}
+      <style jsx global>{`
+        .signature-experiences-swiper {
+          overflow: visible !important;
+        }
+
+        .signature-experiences-swiper .swiper-wrapper {
+          cursor: grab;
+          overflow: visible !important;
+          transition-timing-function: ease-out !important;
+        }
+
+        .signature-experiences-swiper .swiper-wrapper:active {
+          cursor: grabbing;
+        }
+
+        .signature-experiences-swiper .swiper-slide {
+          overflow: visible !important;
+          transition: transform 0.3s ease-out !important;
+        }
+
+        .signature-experiences-swiper .swiper-slide-active {
+          z-index: 10;
+        }
+      `}</style>
     </div>
   );
 };
