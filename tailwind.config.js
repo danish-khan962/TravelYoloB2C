@@ -6,6 +6,7 @@ module.exports = {
        screens: {
         mdx: "1074px",
         'min-[500px]': '500px',
+        xxs: "450px",
       },
       colors: {
         global: {
