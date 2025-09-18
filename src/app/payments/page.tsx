@@ -9,7 +9,7 @@ import Link from 'next/link'
 const page = () => {
 
     // Temporary state for payment
-    const [payment, setPayment] = useState(false);
+    const [payment, setPayment] = useState(true);
 
     return (
         <div className='w-screen px-4 sm:px-6 md:px-8 lg:px-12 flex justify-center items-center pt-[120px] pb-[125px] sm:pt-[130px] sm:pb-[138px] md:pt-[145px] md:pb-[152px] lg:pt-[166px] lg:pb-[170px]'>

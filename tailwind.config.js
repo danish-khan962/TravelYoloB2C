@@ -7,6 +7,7 @@ module.exports = {
         mdx: "1074px",
         'min-[500px]': '500px',
         xxs: "450px",
+        mdplus: "950px",
       },
       colors: {
         global: {

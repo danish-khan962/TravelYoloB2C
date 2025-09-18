@@ -1,7 +1,7 @@
-// components/sections/Blog/BlogCard.tsx
 
 import React from 'react'
 import Image, {StaticImageData} from 'next/image'
+import Link from 'next/link'
 
 type BlogCardProps = {
   image: StaticImageData | string
@@ -14,13 +14,15 @@ type BlogCardProps = {
 const BlogCard: React.FC<BlogCardProps> = ({ image, author, date, title, description }) => {
   return (
     <div className='max-w-[640px] w-full border-2 rounded-lg shadow-md'>
-      <Image
+      <Link href={"/blog/blogpost_id"}>
+        <Image
         src={image}
         alt='blog_card_img'
         height={1000}
         width={1000}
         className='h-[250px] md:h-[335px] object-cover w-full rounded-t-md'
       />
+      </Link>
 
       <div className='pl-[20px] pt-2 pb-[30px] pr-[20px] md:pr-[60px]'>
         <p className='text-[15px] text-[#6C3B3F] italic font-host-grotesk'>
