@@ -8,7 +8,7 @@ import checkRight_gif_1 from "../../../public/payments/opt_1.gif"
 import Link from 'next/link'
 
 const Page = () => {
-  const [payment, setPayment] = useState(false);
+  const [payment, setPayment] = useState(true);
   const [showStaticImage, setShowStaticImage] = useState(false);
 
   useEffect(() => {
