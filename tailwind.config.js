@@ -8,6 +8,7 @@ module.exports = {
         'min-[500px]': '500px',
         xxs: "450px",
         mdplus: "950px",
+        'max-380': { max: "380px" },
       },
       colors: {
         global: {

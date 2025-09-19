@@ -149,6 +149,35 @@ const Page = () => {
 
           <hr className="h-[1px] w-full bg-[#D0D0D0] mt-[56px] md:mt-[53px]" />
 
+          {/*  Swiper buttons Mobile */}
+          <div className="flex flex-row justify-between items-center sm:hidden gap-2 mt-[23px]">
+              <Link href={"#"}>
+                <span className="relative flex justify-center items-center text-start w-[170px] h-[75px] border border-[#312E29] group max-380:w-[160px]"> 
+                  <p className="absolute left-[66px] font-noto-serif text-[20px] text-[#312E29] italic font-light leading-snug"> Previous <br /> blog </p>  
+                  <Image
+                  src={chevronLeft}
+                  alt="previous blog"
+                  width={1000}
+                  height={1000}
+                  className="w-[21px] h-[43px] absolute left-[21px]"
+                  />
+                </span>
+              </Link>
+
+              <Link href={"#"}>
+                <span className="relative flex justify-center items-center text-start w-[170px] h-[75px] border border-[#312E29] group max-380:w-[160px]"> 
+                  <p className="absolute right-[66px] font-noto-serif text-[20px] text-[#312E29] italic font-light leading-snug"> Next <br /> blog </p>  
+                  <Image
+                  src={chevronRight}
+                  alt="next blog"
+                  width={1000}
+                  height={1000}
+                  className="w-[21px] h-[43px] absolute right-[21px]"
+                  />
+                </span>
+              </Link>
+          </div>
+
           {/* Swiper blogs desktop */}
           <div className="hidden sm:flex items-center justify-between mt-[23px] relative">
             {/* Left Chevron */}

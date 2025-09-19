@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import errorCancel from "../../../public/payments/error.svg"
 import checkRight from "../../../public/payments/check.svg"
+import checkRight_gif from "../../../public/payments/opt_2.gif"
 import Link from 'next/link'
 
 const page = () => {
