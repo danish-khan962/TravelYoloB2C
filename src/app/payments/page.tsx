@@ -5,19 +5,18 @@ import Image from 'next/image'
 import errorCancel from "../../../public/payments/error.svg"
 import checkRight from "../../../public/payments/check.svg"
 import checkRight_gif_1 from "../../../public/payments/opt_1.gif"
-import checkRight_gif_2 from "../../../public/payments/opt_2.gif"
 import Link from 'next/link'
 
 const Page = () => {
-  const [payment, setPayment] = useState(true);
-  const [showSuccessContent, setShowSuccessContent] = useState(false);
+  const [payment, setPayment] = useState(false);
+  const [showStaticImage, setShowStaticImage] = useState(false);
 
-  // Trigger fade after 3 seconds when payment is successful
   useEffect(() => {
     if (payment) {
       const timer = setTimeout(() => {
-        setShowSuccessContent(true);
-      }, 3000); // 2.8 seconds delay
+        setShowStaticImage(true);
+      }, 3000);
+
       return () => clearTimeout(timer);
     }
   }, [payment]);
@@ -27,65 +26,57 @@ const Page = () => {
 
       {
         payment ? (
-
-          // ✅ Payment Success State
           <div className='relative w-full flex flex-col justify-center items-center'>
 
-            {/* Background GIF */}
-            <Image
-              src={checkRight_gif_1}
-              alt='payment gif'
-              height={1000}
-              width={1000}
-              className={`h-fit w-fit absolute object-cover transition-opacity duration-1000 ease-in-out ${showSuccessContent ? 'opacity-0' : 'opacity-100'}`}
-              priority
-            />
-
-            {/* Success Content */}
-            <div className={`z-10 flex flex-col justify-center items-center transition-opacity duration-1000 ease-in-out ${showSuccessContent ? 'opacity-100' : 'opacity-0'}`}>
+            <div className='relative h-[116px] w-[116px] sm:h-[82px] sm:w-[82px] md:h-[96px] md:w-[96px] lg:h-[116px] lg:w-[116px]'>
+              <Image
+                src={checkRight_gif_1}
+                alt='payment animation'
+                height={1000}
+                width={1000}
+                className={`absolute top-0 left-0 transition-opacity duration-700 ease-in-out ${showStaticImage ? 'opacity-0' : 'opacity-100'}`}
+              />
 
               <Image
                 src={checkRight}
                 alt='payment successful'
                 height={1000}
                 width={1000}
-                className='h-[72px] w-[72px] sm:h-[82px] sm:w-[82px] md:h-[96px] md:w-[96px] lg:h-[116px] lg:w-[116px]'
+                className={`absolute top-0 left-0 transition-opacity duration-700 ease-in-out ${showStaticImage ? 'opacity-100' : 'opacity-0'}`}
               />
+            </div>
 
-              <h1 className='capitalize font-noto-serif font-normal italic text-[35px] sm:text-[42px] md:text-[42px] lg:text-[48px] text-[#5EA83E] mt-[15px] text-center'>
-                Payment Successful
-              </h1>
+            <h1 className='capitalize font-noto-serif font-normal italic text-[35px] sm:text-[42px] md:text-[42px] lg:text-[48px] text-[#5EA83E] mt-[15px] text-center'>
+              Payment Successful
+            </h1>
 
-              <p className='text-center font-host-grotesk font-normal text-[18px] lg:text-[20px] leading-snug text-[#000000] mt-[8px]'>
-                Your booking has been confirmed. A world of extraordinary experiences awaits.
-              </p>
+            <p className='text-center font-host-grotesk font-normal text-[18px] lg:text-[20px] leading-snug text-[#000000] mt-[8px]'>
+              Your booking has been confirmed. A world of extraordinary experiences awaits.
+            </p>
 
-              <div className='max-w-[630px] w-full mt-[40px] flex flex-col gap-1.5'>
-                <div className='w-full flex flex-row justify-between items-center'>
-                  <p className='font-host-grotesk text-[18px] md:text-[20px] font-semibold'> Booking ID: </p>
-                  <p className='font-host-grotesk text-[18px] md:text-[20px] font-normal'> [XXXXXX] </p>
-                </div>
+            <div className='max-w-[630px] w-full mt-[40px] flex flex-col gap-1.5'>
+              <div className='w-full flex flex-row justify-between items-center'>
+                <p className='font-host-grotesk text-[18px] md:text-[20px] font-semibold'> Booking ID: </p>
+                <p className='font-host-grotesk text-[18px] md:text-[20px] font-normal'> [XXXXXX] </p>
+              </div>
 
-                <hr className='max-w-[627px] w-full bg-[#D8D8D8]' />
+              <hr className='max-w-[627px] w-full bg-[#D8D8D8]' />
 
-                <div className='w-full flex flex-row justify-between items-center'>
-                  <p className='font-host-grotesk text-[18px] md:text-[20px] font-semibold'> Destination: </p>
-                  <p className='font-host-grotesk text-[18px] md:text-[20px] font-normal'> [Name] </p>
-                </div>
+              <div className='w-full flex flex-row justify-between items-center'>
+                <p className='font-host-grotesk text-[18px] md:text-[20px] font-semibold'> Destination: </p>
+                <p className='font-host-grotesk text-[18px] md:text-[20px] font-normal'> [Name] </p>
+              </div>
 
-                <hr className='max-w-[627px] w-full bg-[#D8D8D8]' />
+              <hr className='max-w-[627px] w-full bg-[#D8D8D8]' />
 
-                <div className='w-full flex flex-row justify-between items-center'>
-                  <p className='font-host-grotesk text-[18px] md:text-[20px] font-semibold'> Dates: </p>
-                  <p className='font-host-grotesk text-[18px] md:text-[20px] font-normal'> [XX - XX Month] </p>
-                </div>
+              <div className='w-full flex flex-row justify-between items-center'>
+                <p className='font-host-grotesk text-[18px] md:text-[20px] font-semibold'> Dates: </p>
+                <p className='font-host-grotesk text-[18px] md:text-[20px] font-normal'> [XX - XX Month] </p>
               </div>
             </div>
           </div>
 
         ) : (
-
-          // ❌ Payment Unsuccessful State
           <div className='w-full flex flex-col justify-center items-center'>
             <Image
               src={errorCancel}
@@ -124,7 +115,6 @@ const Page = () => {
               </div>
             </div>
 
-            {/* Buttons */}
             <div className='flex flex-row justify-center items-center flex-wrap gap-x-[26px] gap-y-[20px] mt-[64px]'>
               <Link href={"/"}>
                 <button className='w-[223px] h-[54px] bg-[#312E29] text-[#FFFFFF] outline-none border-none cursor-pointer hover:scale-105 transition-all ease-in-out duration-200 delay-75 rounded-full text-base sm:text-[18px]'>
