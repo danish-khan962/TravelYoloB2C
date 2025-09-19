@@ -46,7 +46,7 @@ const page = () => {
           <p className='max-w-[351px] sm:max-w-[635px] w-full font-host-grotesk font-light text-base sm:text-[20px] mt-[17px] sm:mt-[12px] sm:leading-snug text-[#312E29]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
 
-        <div className='w-screen mt-[56px] sm:mt-[150px]'>
+        <div className='w-full sm:w-screen mt-[56px] sm:mt-[150px]'>
           <SignatureExperiencesWrapper />
         </div>
       </div>
