@@ -4,6 +4,7 @@ import Footer from '../components/common/Footer';
 import '../styles/index.css';
 import Banner from '@/components/common/Banner';
 import { Toaster } from 'react-hot-toast';
+import BannerMobile from '@/components/common/BannerMobile';
 
 export const viewport = {
   width: 'device-width',
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body>
         <Toaster/>
         <Banner />
+        <BannerMobile />
         <Header />
         <main>
           {children}

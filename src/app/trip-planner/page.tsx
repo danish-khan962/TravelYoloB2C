@@ -174,7 +174,7 @@ const Page: React.FC = () => {
             className='w-full sm:w-[241px] h-[55px] bg-[#312E29] text-white hover:scale-105 cursor-pointer transition-all ease-in-out duration-200 mt-[46px] sm:mt-[57px] rounded-full'
             onClick={handleFormSubmit}
           >
-            Talk to a Planner
+            Talk to an Expert
           </button>
 
           <div className='text-[20px] mt-[55px] font-host-grotesk ml-4'>Suggested packages</div>

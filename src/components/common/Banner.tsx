@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 const Banner = () => {
   return (
-    <div className='w-screen bg-[#FFFFFF] sticky top-0 z-50'>
+    <div className='hidden sm:flex w-screen bg-[#FFFFFF] sticky top-0 z-50'>
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 bg-[#FFFFFF] py-3">
         <div className="flex items-center justify-between relative">
 
@@ -27,11 +27,11 @@ const Banner = () => {
 
           {/* Center Section: Call and Quote Info */}
           <div className="flex flex-wrap justify-start sm:justify-center items-center text-center gap-3 sm:gap-4 font-host-grotesk">
-            <p className="text-[12px] sm:text-[14px] md:text-base lg:text-[18px] font-normal">
+            <p className="text-[12px] sm:text-[14px] lg:text-[18px] font-normal">
               Call us today until 8pm
             </p>
 
-            <div className="flex items-center gap-2 text-[12px] sm:text-[14px] md:text-base lg:text-[18px] font-normal">
+            <div className="flex items-center gap-2 text-[12px] sm:text-[14px] lg:text-[18px] font-normal">
               <FaPhoneAlt />
               <Link href="tel:9870066000" className="hover:cursor-pointer hover:underline">
                 +1 561-941-4991

@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
 
 interface TravelCategory {
     id: string;
@@ -131,17 +134,17 @@ const BeyondItinerarySection: React.FC = () => {
                         </div>
                         <Link href={"/trip-planner"}>
                             <Button
-                            variant="outline"
-                            size="md"
-                            className="rounded-full px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4 text-xs sm:text-sm lg:text-[16px] font-host-grotesk font-normal leading-[16px] sm:leading-[18px] lg:leading-[22px] bg-transparent transition-transform duration-200 hover:scale-105 self-start mb-2 sm:mb-0"
-                            style={{
-                                border: '1px solid #312E29',
-                                color: '#312E29',
-                                background: 'transparent'
-                            }}
-                        >
-                            Talk to our Travel Experts
-                        </Button>
+                                variant="outline"
+                                size="md"
+                                className="rounded-full px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4 text-xs sm:text-sm lg:text-[16px] font-host-grotesk font-normal leading-[16px] sm:leading-[18px] lg:leading-[22px] bg-transparent transition-transform duration-200 hover:scale-105 self-start mb-2 sm:mb-0"
+                                style={{
+                                    border: '1px solid #312E29',
+                                    color: '#312E29',
+                                    background: 'transparent'
+                                }}
+                            >
+                                Talk to our Travel Experts
+                            </Button>
                         </Link>
                     </div>
                 </div>
@@ -205,31 +208,42 @@ const BeyondItinerarySection: React.FC = () => {
 
                 {/* Desktop - Slider with 3 items */}
                 <div className="hidden sm:block relative mt-4 sm:mt-6 lg:mt-8">
-                    <div className="flex w-full">
-                        {getVisibleCategories().map((category) => (
-                            <div
-                                key={category.id}
-                                className="relative group w-1/3 h-[320px] md:h-[420px] lg:h-[520px] xl:h-[600px] overflow-hidden flex-shrink-0"
-                            >
-                                <Image
-                                    src={category.image}
-                                    alt={category.title}
-                                    fill
-                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                />
+                    <Swiper
+                        modules={[Autoplay]}
+                        slidesPerView={3}
+                        spaceBetween={0}
+                        loop={true}
+                        autoplay={{
+                            delay: 3000,
+                            disableOnInteraction: false,
+                        }}
+                        speed={1000}
+                        allowTouchMove={false} // optional (disable dragging)
+                        style={{ width: '100%' }}
+                    >
+                        {travelCategories.map((category) => (
+                            <SwiperSlide key={category.id} style={{ width: '33.3333%' }}>
+                                <div className="relative group w-full h-[320px] md:h-[420px] lg:h-[520px] xl:h-[600px] overflow-hidden flex-shrink-0">
+                                    <Image
+                                        src={category.image}
+                                        alt={category.title}
+                                        fill
+                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
 
-                                {/* Overlay background */}
-                                <div className="absolute top-0 left-0 right-0 h-[80px] bg-[#F5F5F5] bg-opacity-0 group-hover:bg-opacity-90 transition-all duration-500 z-10 pointer-events-none"></div>
+                                    {/* Overlay background */}
+                                    <div className="absolute top-0 left-0 right-0 h-[80px] bg-[#F5F5F5] bg-opacity-0 group-hover:bg-opacity-90 transition-all duration-500 z-10 pointer-events-none"></div>
 
-                                {/* Text content: slide on hover */}
-                                <div className="absolute top-0 left-0 right-0 h-[70px] flex flex-col items-center justify-center px-6 py-2 text-center pointer-events-none -translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out z-20">
-                                    <h3 className="text-global-1 text-[32px] font-light italic font-noto-serif">
-                                        {category.title}
-                                    </h3>
+                                    {/* Text content */}
+                                    <div className="absolute top-0 left-0 right-0 h-[70px] flex flex-col items-center justify-center px-6 py-2 text-center pointer-events-none -translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out z-20">
+                                        <h3 className="text-global-1 text-[32px] font-light italic font-noto-serif">
+                                            {category.title}
+                                        </h3>
+                                    </div>
                                 </div>
-                            </div>
+                            </SwiperSlide>
                         ))}
-                    </div>
+                    </Swiper>
                 </div>
 
                 {/* Mobile - Stacked Vertically */}

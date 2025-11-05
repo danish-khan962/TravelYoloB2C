@@ -51,20 +51,25 @@ const HeroSection = () => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [previousIndex, setPreviousIndex] = useState(SwiperImages.length - 1)
   const [fade, setFade] = useState(true)
+  const transitionDuration = 1000 // keep consistent
 
   useEffect(() => {
     const interval = setInterval(() => {
       // fade out text + image together
       setFade(false)
 
-      // sync both at same time
+      // wait for fade-out, then change both image and text together
       setTimeout(() => {
         setPreviousIndex(activeIndex)
         setActiveIndex((prevIndex) =>
           prevIndex === SwiperImages.length - 1 ? 0 : prevIndex + 1
         )
-        setFade(true)
-      }, 1000) 
+
+        // fade in text after image switches
+        setTimeout(() => {
+          setFade(true)
+        }, 150) // 
+      }, transitionDuration)
     }, 5000)
 
     return () => clearInterval(interval)

@@ -4,37 +4,55 @@ import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 const EnquiryForm = () => {
-  // Form states
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [countryCode, setCountryCode] = useState('+91');
+  const [emailError, setEmailError] = useState('');
+  const [message, setMessage] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Form submission
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    if (value && !validateEmail(value)) {
+      setEmailError('Please enter a valid email address');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '' || /^\d+$/.test(value)) {
+      setPhone(value);
+    }
+  };
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation checks
-    if (!firstName.trim()) {
-      toast.error("First name is required.");
-      return;
-    }
-    if (!lastName.trim()) {
-      toast.error("Last name is required.");
-      return;
-    }
-    if (!email.trim() || !email.includes("@")) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
-    if (phone && !/^\d{10}$/.test(phone)) {
-      toast.error("Phone number must contain exactly 10 digits.");
+    // Strict required field validation
+    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+      toast.error("Please fill in First Name, Last Name, and Email before submitting.");
       return;
     }
 
-    // Save form data
+    if (email && !validateEmail(email)) {
+      setEmailError('Please enter a valid email address');
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    console.log({ firstName, lastName, email, phone: `${countryCode}${phone}`, message });
+
     const formData = {
       firstName,
       lastName,
@@ -48,24 +66,20 @@ const EnquiryForm = () => {
 
     toast.success("Form submitted successfully!");
 
-    // Clear form
     setFirstName("");
     setLastName("");
     setEmail("");
     setPhone("");
     setMessage("");
 
-    // Show overlay for 4s
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 4000);
   };
 
   return (
     <div className="relative w-full flex justify-center items-center">
-      {/* Toast container */}
       <Toaster position="top-center" reverseOrder={false} />
 
-      {/* Success Overlay */}
       {showSuccess && (
         <>
           <div className="absolute inset-0 z-20 flex justify-center items-center bg-[#D9D9D9]/30 backdrop-blur-sm rounded-md transition-all duration-300">
@@ -88,55 +102,86 @@ const EnquiryForm = () => {
         </>
       )}
 
-      <form
-        className={`max-w-[878px] w-full flex flex-col gap-y-5 transition-all duration-300 ${
-          showSuccess ? "blur-sm pointer-events-none" : ""
-        }`}
-        onSubmit={handleFormSubmit}
-      >
-        {/* Name inputs */}
-        <div className="flex flex-col gap-y-5 md:flex-row gap-x-[24px]">
+      <form className='max-w-[800px] w-full flex flex-col gap-y-[19px]' onSubmit={handleFormSubmit}>
+        <div className="flex flex-row gap-4">
           <input
-            type="text"
-            placeholder="First name*"
-            className="w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] font-host-grotesk"
+            type='text'
+            placeholder='First Name*'
+            className='w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk'
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Last name*"
-            className="w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] font-host-grotesk"
+          /><input
+            type='text'
+            placeholder='Last Name*'
+            className='w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk'
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
-
-        {/* Email */}
-        <input
-          type="text"
-          placeholder="Email*"
-          className="w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] font-host-grotesk"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        {/* Phone */}
-        <input
-          type="text"
-          placeholder="Phone"
-          className="w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] font-host-grotesk"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-
-        {/* Message */}
-        <input
-          type="text"
-          placeholder="Tell us more about your travel plans"
-          className="w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] font-host-grotesk"
+        <div className='w-full'>
+          <input
+            type='email'
+            placeholder='Email*'
+            className={`w-full text-[18px] font-normal outline-none border rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk ${emailError ? 'border-red-500' : 'border-[#98B6E2]'
+              }`}
+            value={email}
+            onChange={handleEmailChange}
+          />
+          {emailError && (
+            <p className='text-red-500 text-sm mt-1 ml-1'>{emailError}</p>
+          )}
+        </div>
+        <div className='w-full flex gap-2'>
+          <div className='relative w-[110px]'>
+            <select
+              value={countryCode}
+              onChange={(e) => setCountryCode(e.target.value)}
+              className='w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 pl-4 pr-9 font-host-grotesk appearance-none cursor-pointer bg-white'
+              style={{ textAlign: 'center' }}
+            >
+              <option value='+1'>🇺🇸 +1</option>
+              <option value='+44'>🇬🇧 +44</option>
+              <option value='+91'>🇮🇳 +91</option>
+              <option value='+61'>🇦🇺 +61</option>
+              <option value='+81'>🇯🇵 +81</option>
+              <option value='+86'>🇨🇳 +86</option>
+              <option value='+33'>🇫🇷 +33</option>
+              <option value='+49'>🇩🇪 +49</option>
+              <option value='+39'>🇮🇹 +39</option>
+              <option value='+34'>🇪🇸 +34</option>
+              <option value='+7'>🇷🇺 +7</option>
+              <option value='+55'>🇧🇷 +55</option>
+              <option value='+27'>🇿🇦 +27</option>
+              <option value='+52'>🇲🇽 +52</option>
+              <option value='+82'>🇰🇷 +82</option>
+              <option value='+65'>🇸🇬 +65</option>
+              <option value='+971'>🇦🇪 +971</option>
+              <option value='+966'>🇸🇦 +966</option>
+              <option value='+60'>🇲🇾 +60</option>
+              <option value='+66'>🇹🇭 +66</option>
+            </select>
+            <div className='absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none'>
+              <svg className='w-4 h-4 text-[#727272]' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
+              </svg>
+            </div>
+          </div>
+          <input
+            type='tel'
+            placeholder='Phone'
+            className='flex-1 text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk'
+            value={phone}
+            onChange={handlePhoneChange}
+            inputMode='numeric'
+            pattern='[0-9]*'
+          />
+        </div>
+        <textarea
+          placeholder='Tell us more about your travel plans'
+          className='w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk resize-vertical min-h-[100px]'
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          rows={4}
         />
 
         <div className="w-full flex justify-center items-center mt-[67px] md:mt-[55px]">
