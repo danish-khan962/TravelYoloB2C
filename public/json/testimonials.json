@@ -1,0 +1,46 @@
+[
+  {
+    "id": "1",
+    "content": "I was amazed at how organized our trip to Bangladesh was. Our guides were very professional and the itinerary was very well planned.",
+    "rating": 5,
+    "tripTitle": "Cultural Bangladesh Adventure",
+    "profile": {
+      "id": "p1",
+      "name": "Jessica",
+      "avatar": "/images/img_medium_shot_hap.png"
+    }
+  },
+  {
+    "id": "2",
+    "content": "The team at TravelYolo went above and beyond to make our honeymoon unforgettable. Every detail was perfect, from the romantic dinners to the breathtaking locations.",
+    "rating": 5,
+    "tripTitle": "Luxury Maldives Honeymoon",
+    "profile": {
+      "id": "p2",
+      "name": "Sarah & Michael",
+      "avatar": "/images/img_medium_shot_hap_90x76.png"
+    }
+  },
+  {
+    "id": "3",
+    "content": "Our family adventure to Costa Rica was incredible. The kids loved every moment, and we felt completely taken care of throughout the entire journey.",
+    "rating": 5,
+    "tripTitle": "Costa Rica Family Adventure",
+    "profile": {
+      "id": "p3",
+      "name": "The Johnson Family",
+      "avatar": "/images/img_medium_shot_hap.png"
+    }
+  },
+  {
+    "id": "4",
+    "content": "From the luxury accommodations to the personalized experiences, everything exceeded our expectations. TravelYolo truly understands what luxury travel means.",
+    "rating": 5,
+    "tripTitle": "Premium European Tour",
+    "profile": {
+      "id": "p4",
+      "name": "Robert & Elena",
+      "avatar": "/images/img_medium_shot_hap_90x76.png"
+    }
+  }
+]
