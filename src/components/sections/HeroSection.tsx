@@ -50,17 +50,25 @@ const SwiperImages = [
 const HeroSection = () => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [previousIndex, setPreviousIndex] = useState(SwiperImages.length - 1)
+  const [fade, setFade] = useState(true)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => {
-        setPreviousIndex(prevIndex)
-        return prevIndex === SwiperImages.length - 1 ? 0 : prevIndex + 1
-      })
+      // fade out text + image together
+      setFade(false)
+
+      // sync both at same time
+      setTimeout(() => {
+        setPreviousIndex(activeIndex)
+        setActiveIndex((prevIndex) =>
+          prevIndex === SwiperImages.length - 1 ? 0 : prevIndex + 1
+        )
+        setFade(true)
+      }, 1000) 
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [activeIndex])
 
   return (
     <section className="relative w-screen h-full text-white">
@@ -71,7 +79,7 @@ const HeroSection = () => {
           style={{
             backgroundImage: `url(${SwiperImages[previousIndex].backgroundImage.src})`,
             backgroundPosition:
-              previousIndex===5 || previousIndex===6 ? "80% center" : "center",
+              previousIndex === 5 || previousIndex === 6 ? "80% center" : "center",
             zIndex: 0,
           }}
         />
@@ -85,7 +93,7 @@ const HeroSection = () => {
               opacity: index === activeIndex ? 1 : 0,
               backgroundImage: `url(${item.backgroundImage.src})`,
               backgroundPosition:
-                index===5 || index===6 ? "80% center" : "center",
+                index === 5 || index === 6 ? "80% center" : "center",
               zIndex: index === activeIndex ? 5 : 1,
             }}
           />
@@ -93,7 +101,6 @@ const HeroSection = () => {
 
         {/* Black Tint Overlay */}
         <div className="absolute inset-0 z-10">
-          {/* Desktop (>=sm = 640px) */}
           <Image
             src={Black_Tint_for_Image}
             alt="overlay desktop"
@@ -101,7 +108,6 @@ const HeroSection = () => {
             priority
             className="object-cover w-full h-full hidden sm:block"
           />
-          {/* Mobile (<500px → Tailwind doesn’t have 500px by default, so we use `max-[500px]:block` */}
           <Image
             src={Black_Tint_Mobile}
             alt="overlay mobile"
@@ -113,7 +119,11 @@ const HeroSection = () => {
 
         {/* Content (All your original styles preserved exactly) */}
         <div className="relative z-10 flex flex-col justify-between md:justify-center items-center gap-y-[66px] px-4 pt-[67px] md:pt-0 pb-[42px] md:pb-0 h-full text-center">
-          <div className="flex flex-col justify-center items-center text-center">
+          <div
+            className={`flex flex-col justify-center items-center text-center transition-all duration-1000 ease-in-out ${
+              fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+            }`}
+          >
             <h1 className="font-noto-serif font-light italic text-[34px] sm:text-[40px] md:text-[45px] lg:text-[52px] capitalize leading-[42px] sm:leading-[45px] md:leading-[55px] lg:leading-[65px]">
               {SwiperImages[activeIndex].heading}
             </h1>

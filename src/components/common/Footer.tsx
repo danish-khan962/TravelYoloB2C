@@ -74,14 +74,14 @@ const Footer = () => {
                     <div className='flex flex-col sm:flex-row gap-x-[73px] gap-y-[33px]'>
                         <div className='flex flex-col'>
                             <p className='text-base font-semibold text-white font-host-grotesk'>Navigation</p>
-                            <ul className='flex flex-row sm:flex-col gap-x-[10px] gap-y-[27px] mt-[19px] sm:mt-[22px]'>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer'><Link href={"/contact"}> Contact Us </Link></li>
+                            <ul className='flex flex-row sm:flex-col gap-x-[10px] gap-y-[27px] mt-[19px] sm:mt-[22px] items-center md:items-start'>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/contact"}> Contact Us </Link></li>
                                 <span className='block sm:hidden text-[#C9C9C9]'> | </span>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer'><Link href={"/destinations"}> Destinations </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/destinations"}> Destinations </Link></li>
                                 <span className='block sm:hidden text-[#C9C9C9]'> | </span>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer'><Link href={"/experiences"}> Experiences </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/experiences"}> Experiences </Link></li>
                                 <span className='block sm:hidden text-[#C9C9C9]'> | </span>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer'><Link href={"/trip-planner"}> Travel Planner </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/trip-planner"}> Trip Planner </Link></li>
                             </ul>
                         </div>
                         <div className='flex flex-col'>
@@ -89,7 +89,7 @@ const Footer = () => {
                             <ul className='flex flex-row sm:flex-col gap-x-[10px] gap-y-[27px] mt-[19px] sm:mt-[22px]'>
                                 {/* <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer'><Link href={"#"}> Help center </Link></li> */}
                                 {/* <span className='block sm:hidden text-[#C9C9C9]'> | </span> */}
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer'>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'>
                                     <a
                                         href="https://travelyollo.com/assets/pdf/All-Policies-TravelYollo.pdf"
                                         target="_blank"
