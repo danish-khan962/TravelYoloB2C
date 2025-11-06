@@ -24,8 +24,8 @@ const BannerMobile = () => {
     <section
       className={`md:hidden flex flex-row justify-center items-center w-screen transition-all duration-300 ${
         isSticky
-          ? 'fixed top-0 left-0 right-0 z-[999999]'
-          : 'absolute top-[500px] left-0 right-0 z-[999999]'
+          ? 'fixed bottom-0 left-0 right-0 z-[999999]'
+          : 'fixed bottom-0 left-0 right-0 z-[999999]'
       }`}
       style={{ pointerEvents: 'auto' }}
     >

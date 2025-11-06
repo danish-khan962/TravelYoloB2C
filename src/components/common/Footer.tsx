@@ -79,11 +79,11 @@ const Footer = () => {
                                     <Image src={"/images/linkedin_icon.png"} alt={"linkedin"} height={58} width={58} className='h-[58px] w-[58px]' />
                                 </Link>
                             </span>
-                            <span>
+                            {/* <span>
                                 <Link href={"https://www.x.com/profile.php?id=61573601551252"} target="_blank" rel="noopener noreferrer">
-                                    <Image src={"/images/x_icon.png"} alt={"facebook"} height={58} width={58} className='h-[58px] w-[58px]' />
+                                    <Image src={"/images/x_icon.png"} alt={"x"} height={58} width={58} className='h-[58px] w-[58px]' />
                                 </Link>
-                            </span>
+                            </span> */}
                             <span>
                                 <Link href={"https://www.instagram.com/travelyollo/"} target="_blank" rel="noopener noreferrer">
                                     <Image src={"/images/instagram_icon.png"} alt={"instagram"} height={58} width={58} className='h-[58px] w-[58px]' />
@@ -115,10 +115,10 @@ const Footer = () => {
                         <div className='flex flex-col'>
                             <p className='text-base font-semibold text-white font-host-grotesk'>Support</p>
                             <ul className='flex flex-col gap-x-[10px] gap-y-[27px] mt-[19px] sm:mt-[22px] flex-wrap'>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/contact"}> Terms and Conditions </Link></li>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/contact"}> Refund and Cancellation Policy </Link></li>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/contact"}> Shipping or Delivery Policy </Link></li>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/contact"}> Privacy Policy </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"https://drive.google.com/file/d/1cyi4iDTv7S4rSxP7fkvhqs06wpIYPrz0/view"} target='_blank'> Terms and Conditions </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"https://drive.google.com/file/d/1JSxO4Fm0YkViYa34PjudW9D03wDqh6WZ/view?usp=drivesdk"} target='_blank'> Refund and Cancellation Policy </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"https://drive.google.com/file/d/1PDPlh6_MsesjX-woTXmi8__LVEL8L_oe/view?usp=drivesdk"} target='_blank'> Shipping or Delivery Policy </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"https://drive.google.com/file/d/1YUM_pXnm0xCbMq1_W2pCnW4A-9wbG2oh/view?usp=drivesdk"} target='_blank'> Privacy Policy </Link></li>
                             </ul>
                         </div>
                         <div>

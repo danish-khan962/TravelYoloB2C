@@ -38,7 +38,7 @@ export function Header({ className = '' }: HeaderProps): JSX.Element {
   ] as const;
 
   return (
-    <header className={`relative w-full bg-header-1 ${className}`}>
+    <header className={`sticky z-[999999] top-0 sm:top-16 w-full bg-header-1 ${className}`}>
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between sm:justify-center items-center py-4 sm:py-6 gap-2">
           {/* Logo */}

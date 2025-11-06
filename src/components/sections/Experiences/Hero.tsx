@@ -101,7 +101,7 @@ const Hero = () => {
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-start pt-[240px] sm:pt-0 sm:justify-center items-center gap-y-[66px] px-4 h-full text-center">
           <h1 className="font-noto-serif font-light italic text-[34px] sm:text-[40px] md:text-[45px] lg:text-[52px] capitalize leading-[42px] sm:leading-[45px] md:leading-[55px] lg:leading-[65px]">
-            Journeys designed around what inspires you most.
+            Indulge your senses, your stories begin here.
           </h1>
         </div>
       </div>
