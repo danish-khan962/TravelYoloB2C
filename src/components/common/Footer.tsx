@@ -22,7 +22,7 @@ const Footer = () => {
             <div className='w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 flex flex-col-reverse lg:flex-row justify-between gap-y-[35px]'>
 
                 {/* Links */}
-                <div className='flex flex-col sm:flex-row gap-x-1 gap-y-[40px]'>
+                <div className='flex flex-col lg:flex-row gap-x-1 gap-y-[40px]'>
                     {/* Logo - Phone and Email */}
                     <div>
                         <Image
@@ -64,11 +64,11 @@ const Footer = () => {
                             <Link href={"#"} className='flex flex-row items-center gap-x-2 justify-center'>
                                 <span>
                                     <Image
-                                        src={"/images/message_icon.png"}
+                                        src={"/images/location_icon.png"}
                                         alt={"phone_icon"}
                                         height={1000}
                                         width={1000}
-                                        className='h-[14px] w-[18.5px]'
+                                        className='h-[16px] w-auto'
                                     />
                                 </span>
                                 <span className='text-[14px] sm:text-base text-[#C9C9C9] font-host-grotesk  hover:underline hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer'> 211 Hana Rd, Edison, NJ 08817, USA </span>
@@ -104,7 +104,7 @@ const Footer = () => {
                     <div className='flex flex-col sm:flex-row gap-x-[73px] gap-y-[33px]'>
                         <div className='flex flex-col'>
                             <p className='text-base font-semibold text-white font-host-grotesk'>Navigation</p>
-                            <ul className='flex flex-row sm:flex-col gap-x-[10px] gap-y-[27px] mt-[19px] sm:mt-[22px] items-center md:items-start flex-wrap'>
+                            <ul className='flex flex-row sm:flex-col gap-x-[10px] gap-y-[27px] mt-[19px] sm:mt-[22px] flex-wrap text-start'>
                                 <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/"}> Home </Link></li>
                                 <span className='block sm:hidden text-[#C9C9C9]'> | </span>
                                 <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/destinations"}> Destinations </Link></li>
@@ -118,10 +118,10 @@ const Footer = () => {
                         <div className='flex flex-col'>
                             <p className='text-base font-semibold text-white font-host-grotesk'>Support</p>
                             <ul className='flex flex-col gap-x-[10px] gap-y-[27px] mt-[19px] sm:mt-[22px] flex-wrap'>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"https://drive.google.com/file/d/1cyi4iDTv7S4rSxP7fkvhqs06wpIYPrz0/view"} target='_blank'> Terms and Conditions </Link></li>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"https://drive.google.com/file/d/1JSxO4Fm0YkViYa34PjudW9D03wDqh6WZ/view?usp=drivesdk"} target='_blank'> Refund and Cancellation Policy </Link></li>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"https://drive.google.com/file/d/1PDPlh6_MsesjX-woTXmi8__LVEL8L_oe/view?usp=drivesdk"} target='_blank'> Shipping or Delivery Policy </Link></li>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"https://drive.google.com/file/d/1YUM_pXnm0xCbMq1_W2pCnW4A-9wbG2oh/view?usp=drivesdk"} target='_blank'> Privacy Policy </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/terms-and-conditions"} > Terms and Conditions </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/refund-and-cancellation-policy"}> Refund and Cancellation Policy </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/shipping-or-delivery-policy"} > Shipping or Delivery Policy </Link></li>
+                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/privacy-policy"} > Privacy Policy </Link></li>
                             </ul>
                         </div>
                         <div>
@@ -165,7 +165,7 @@ const Footer = () => {
             </div>
 
             {/* Footer banner - Desktop */}
-            <div className='hidden sm:block w-full mt-[60px]'>
+            <div className='hidden sm:block w-full mt-[60px] pb-[50px] md:pb-0'>
                 <div className='max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8'>
                     <hr className='w-full border-t border-[#4B4843]' />
                     <div className='flex flex-row justify-between items-center py-[22px]'>

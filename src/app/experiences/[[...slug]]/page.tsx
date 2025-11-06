@@ -10,6 +10,9 @@ import vector from "../../../../public/images/img_vector.svg"
 import Image from 'next/image'
 import ExperienceWrapper from '@/components/sections/Experiences/ExperienceWrapper'
 
+import { useParams } from "next/navigation";
+
+
 type BlogPost = {
   image: string
   author: string
@@ -25,8 +28,62 @@ const page = () => {
   useEffect(() => {
     fetch("/json/blogData.json")
       .then((res) => res.json())
-      .then((data) => setBlogData(data.slice(0,3)))
+      .then((data) => setBlogData(data.slice(0, 3)))
   }, [])
+
+
+  // Content for different itinieary pages
+  const params = useParams();
+  const slug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug;
+
+  const getContent = (slug: string | undefined) => {
+    switch (slug) {
+      case "romantic-escapes":
+        return {
+          overview:
+            "Whispers of candlelight dinners, secret beaches, and sunsets shared in perfect silence. Crafted for two, made to remember.",
+          itinerary:
+            "Curated journeys designed to celebrate love and connection. From sunrise walks and vineyard tours to secluded hideaways and starlit dinners, every moment is crafted to inspire closeness and lasting memories."
+        };
+      case "family-getaways":
+        return {
+          overview:
+            "Where laughter echoes louder, adventures feel closer, and every journey becomes a family story worth retelling.",
+          itinerary:
+            "Curated journeys that bring laughter and togetherness. From adventure trails and wildlife encounters to storytelling evenings and family-friendly activities, every moment is crafted to inspire connection and shared memories."
+        };
+      case "cultural-soujourns":
+        return {
+          overview:
+            "Step into living history, taste heritage in every meal, and lose yourself in the rhythm of a world rich in stories.",
+          itinerary:
+            "Curated journeys that reveal the soul of a destination. From guided tours and traditional cooking classes to local festivals and hidden gems, every moment is crafted to inspire curiosity, connection, and lasting memories."
+        };
+      case "scenic-escapes":
+        return {
+          overview:
+            "From misty peaks to endless coastlines, find beauty in every turn and peace in every horizon.",
+          itinerary:
+            "Curated journeys that celebrate nature’s grandeur. From misty peaks and coastal walks to tranquil lakes and hidden scenic spots, every moment is crafted to inspire wonder, reflection, and lasting memories."
+        };
+      case "wildlife-encounters":
+        return {
+          overview:
+            "Wake to the call of the wild and witness nature unfold in all its untamed beauty, curated with care and comfort.",
+          itinerary:
+            "Curated journeys into the wild. From morning safaris and animal encounters to peaceful lodge stays, every moment is crafted to inspire awe, connection with nature, and unforgettable memories."
+        };
+      default:
+        return {
+          overview:
+            "Think private safaris, glacier hikes, and hot air balloons—designed for those who crave excitement with comfort.",
+          itinerary:
+            "Curated journeys designed to immerse you in culture, history, and adventure. From sunrise hikes and heritage walks to culinary trails and hidden gems, every moment is crafted to inspire, connect, and create memories that last a lifetime."
+        };
+    }
+  };
+
+  const { overview, itinerary } = getContent(slug);
 
 
   return (
@@ -38,12 +95,16 @@ const page = () => {
 
         <div className='flex flex-col items-start mt-[55px] sm:mt-[70px]'>
           <h1 className='text-[32px] sm:text-[40px] text-[#000000] font-noto-serif font-light italic'>Package Overview</h1>
-          <p className='max-w-[321px] sm:max-w-[830px] w-full font-host-grotesk font-light text-base sm:text-[20px] mt-[15px] sm:mt-[24px] sm:leading-snug text-[#312E29]'>Think private safaris, glacier hikes, and hot air balloons—designed for those who crave excitement with comfo</p>
+          <p className='max-w-[321px] sm:max-w-[830px] w-full font-host-grotesk font-light text-base sm:text-[20px] mt-[15px] sm:mt-[24px] sm:leading-snug text-[#312E29]'>
+            {overview}
+          </p>
         </div>
 
         <div className='flex flex-col items-start mt-[55px] sm:mt-[60px]'>
           <h1 className='text-[32px] sm:text-[40px] font-noto-serif font-light italic'>Experiences Itinerary</h1>
-          <p className='max-w-[351px] sm:max-w-[810px] w-full font-host-grotesk font-light text-base sm:text-[20px] mt-[17px] sm:mt-[12px] sm:leading-snug text-[#312E29]'>Curated journeys designed to immerse you in culture, history, and adventure. From sunrise hikes and heritage walks to culinary trails and hidden gems, every moment is crafted to inspire, connect, and create memories that last a lifetime.</p>
+          <p className='max-w-[351px] sm:max-w-[810px] w-full font-host-grotesk font-light text-base sm:text-[20px] mt-[17px] sm:mt-[12px] sm:leading-snug text-[#312E29]'>
+            {itinerary}
+          </p>
         </div>
 
         <div className='w-full sm:w-screen mt-[56px] sm:mt-[100px]'>

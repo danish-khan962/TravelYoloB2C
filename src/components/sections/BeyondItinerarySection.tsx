@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
@@ -52,6 +52,7 @@ const BeyondItinerarySection: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
     const totalItems = travelCategories.length;
+    const swiperRef = useRef<any>(null);
 
     // Check if mobile on mount and resize
     useEffect(() => {
@@ -67,10 +68,12 @@ const BeyondItinerarySection: React.FC = () => {
     const maxIndex = totalItems - itemsToShow;
 
     const handleNext = () => {
+        swiperRef.current?.slideNext();
         setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
     };
 
     const handlePrev = () => {
+        swiperRef.current?.slidePrev();
         setCurrentIndex((prev) => Math.max(prev - 1, 0));
     };
 
@@ -218,8 +221,11 @@ const BeyondItinerarySection: React.FC = () => {
                             disableOnInteraction: false,
                         }}
                         speed={1000}
-                        allowTouchMove={false} // optional (disable dragging)
+                        allowTouchMove={false}
                         style={{ width: '100%' }}
+                        onBeforeInit={(swiper) => {
+                            swiperRef.current = swiper;
+                        }}
                     >
                         {travelCategories.map((category) => (
                             <SwiperSlide key={category.id} style={{ width: '33.3333%' }}>
