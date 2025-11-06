@@ -14,6 +14,9 @@ const Footer = () => {
         e.preventDefault();
     }
 
+    // get latest year
+    const year: number = new Date().getFullYear();
+
     return (
         <section className='w-full  bg-[#312E29] pt-[44px] sm:pt-[83px] pb-0 '>
             <div className='w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 flex flex-col-reverse lg:flex-row justify-between gap-y-[35px]'>
@@ -71,7 +74,7 @@ const Footer = () => {
                                 <span className='text-[14px] sm:text-base text-[#C9C9C9] font-host-grotesk  hover:underline hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer'> 211 Hana Rd, Edison, NJ 08817, USA </span>
                             </Link>
                         </div>
-                        
+
                         {/*  Social Links for mobile */}
                         <div className='flex flex-row gap-x-4 mt-[40px] md:mt-[50px] justify-start items-center'>
                             <span>
@@ -165,8 +168,13 @@ const Footer = () => {
             <div className='hidden sm:block w-full mt-[60px]'>
                 <div className='max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8'>
                     <hr className='w-full border-t border-[#4B4843]' />
-                    <div className='flex flex-row justify-center items-center py-[22px]'>
-                        <p className='text-[14px] text-[#C9C9C9] font-host-grotesk font-light'> Copyright © 2026 TravelYollo. All Rights Reserved.</p>
+                    <div className='flex flex-row justify-between items-center py-[22px]'>
+                        <p className='text-[14px] text-[#C9C9C9] font-host-grotesk font-light'>
+                            Copyright © {year} TravelYollo. All Rights Reserved.
+                        </p>
+                        <p className='text-[14px] text-[#C9C9C9] font-host-grotesk font-light'>
+                            Design and Developed by <span className='font-semibold'>ID8NXT</span>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -174,8 +182,11 @@ const Footer = () => {
             {/* Footer banner - Mobile */}
             <div className='block sm:hidden w-full mt-[38px]'>
                 {/* <hr className='w-screen text-[#4B4843]' /> */}
-                <div className='w-screen bg-[#161616]'>
-                    <p className='w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 text-[14px] py-[22px] text-[#C9C9C9] font-host-grotesk font-light'> Copyright © 2026 TravelYollo. All Rights Reserved.</p>
+                <div className='w-screen bg-[#161616] flex flex-col gap-1 justify-center text-center'>
+                    <p className='w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 text-[14px] mt-[22px] text-[#C9C9C9] font-host-grotesk font-light'> Copyright © {year} TravelYollo. All Rights Reserved.</p>
+                    <p className='text-[14px] text-[#C9C9C9] font-host-grotesk font-light mb-[80px]'>
+                        Design and Developed by <span className='font-semibold'>ID8NXT</span>
+                    </p>
                 </div>
             </div>
         </section>

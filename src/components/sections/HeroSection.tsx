@@ -19,26 +19,31 @@ import Black_Tint_Mobile from "../../../public/images/black_tint_mobile.png"
 const SwiperImages = [
   {
     backgroundImage: Hero_background_1,
+    backgroundImageMobile: "/images/bg-1-mobile.png",
     heading: "Wonder Isn't a Place. It's How We Travel.",
     subheading: "From timeless landscapes to tailored details, we design journeys that stay with you."
   },
   {
     backgroundImage: Hero_background_2,
+    backgroundImageMobile: "/images/bg-2-mobile.png",
     heading: "Where beauty meets curiosity and every destination tells a story.",
     subheading: "From iconic wonders to hidden corners, every journey with TravelYollo is crafted to feel uniquely yours."
   },
   {
     backgroundImage: Hero_background_3,
+    backgroundImageMobile: "/images/bg-3-mobile.png",
     heading: "From timeless wonders to wild horizons, every journey begins with inspiration.",
     subheading: "Whether it’s heritage, nature, or city lights, discover the world through your own lens."
   },
   {
     backgroundImage: Hero_background_4,
+    backgroundImageMobile: "/images/bg-4-mobile.png",
     heading: "Discover the world’s icons with new eyes and write stories only travel can tell.",
     subheading: "At TravelYollo, we create journeys that feel effortless, meaningful, and entirely personal."
   },
   {
     backgroundImage: Hero_background_5,
+    backgroundImageMobile: "/images/bg-5-mobile.png",
     heading: "See the world differently and let every moment unfold in its own magic.",
     subheading: "From sunrise safaris to sunsets by the beach discover travel that moves you."
   },
@@ -52,6 +57,15 @@ const HeroSection = () => {
   const [previousIndex, setPreviousIndex] = useState(SwiperImages.length - 1)
   const [fade, setFade] = useState(true)
   const transitionDuration = 1000 // keep consistent
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -82,7 +96,9 @@ const HeroSection = () => {
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-no-repeat"
           style={{
-            backgroundImage: `url(${SwiperImages[previousIndex].backgroundImage.src})`,
+            backgroundImage: `url(${isMobile
+              ? SwiperImages[previousIndex].backgroundImageMobile
+              : SwiperImages[previousIndex].backgroundImage.src})`,
             backgroundPosition:
               previousIndex === 5 || previousIndex === 6 ? "80% center" : "center",
             zIndex: 0,
@@ -96,10 +112,12 @@ const HeroSection = () => {
             className="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out bg-cover bg-no-repeat"
             style={{
               opacity: index === activeIndex ? 1 : 0,
-              backgroundImage: `url(${item.backgroundImage.src})`,
+              backgroundImage: `url(${isMobile
+                ? item.backgroundImageMobile
+                : item.backgroundImage.src})`,
               backgroundPosition:
-                index === 5 || index === 6 ? "80% center" : "center",
-              zIndex: index === activeIndex ? 5 : 1,
+        index === 5 || index === 6 ? "80% center" : "center",
+        zIndex: index === activeIndex ? 5 : 1,
             }}
           />
         ))}
@@ -125,9 +143,8 @@ const HeroSection = () => {
         {/* Content (All your original styles preserved exactly) */}
         <div className="relative z-10 flex flex-col justify-between md:justify-center items-center gap-y-[66px] px-4 pt-[67px] md:pt-0 pb-[42px] md:pb-0 h-full text-center">
           <div
-            className={`flex flex-col justify-center items-center text-center transition-all duration-1000 ease-in-out ${
-              fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-            }`}
+            className={`flex flex-col justify-center items-center text-center transition-all duration-1000 ease-in-out ${fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+              }`}
           >
             <h1 className="font-noto-serif font-light italic text-[34px] sm:text-[40px] md:text-[45px] lg:text-[52px] capitalize leading-[42px] sm:leading-[45px] md:leading-[55px] lg:leading-[65px]">
               {SwiperImages[activeIndex].heading}

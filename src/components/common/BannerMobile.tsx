@@ -35,12 +35,14 @@ const BannerMobile = () => {
           <Link href="tel:9870066000" className="hover:cursor-pointer hover:underline">
             +1 561-941-4991
           </Link>
-          <p className="font-host-grotesk text-sm">until 8pm</p>
+          <p className="font-host-grotesk text-sm">
+            until 6pm
+          </p>
         </div>
       </div>
 
       <div className="w-[50%] h-[56px] flex justify-center items-center font-host-grotesk text-base font-normal bg-[#171C28] text-white cursor-pointer">
-        Request a quote
+        Request a Quote
       </div>
     </section>
   )

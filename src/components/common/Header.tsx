@@ -37,8 +37,11 @@ export function Header({ className = '' }: HeaderProps): JSX.Element {
     { label: 'Contact Us', href: '/contact', active: pathname === '/contact' }
   ] as const;
 
+  const slugify = (title: string) =>
+    title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
   return (
-    <header className={`sticky z-[999999] top-0 sm:top-16 w-full bg-header-1 ${className}`}>
+    <header className={`sticky z-[999999] top-0 sm:top-14 md:top-16 w-full bg-header-1 ${className}`}>
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between sm:justify-center items-center py-4 sm:py-6 gap-2">
           {/* Logo */}
@@ -85,8 +88,8 @@ export function Header({ className = '' }: HeaderProps): JSX.Element {
                 onMouseEnter={() => setCategoriesOpen(true)}
                 onMouseLeave={() => setCategoriesOpen(false)}
               >
-                <Link
-                  href="/experiences"
+                <button
+                  type="button"
                   className={`
                     text-base lg:text-[17px] 2xl:text-[20px]
                     font-host-grotesk font-normal
@@ -108,7 +111,7 @@ export function Header({ className = '' }: HeaderProps): JSX.Element {
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
-                </Link>
+                </button>
 
                 {categoriesOpen && (
                   <div className="absolute top-full left-0 pt-2 z-50">
@@ -119,7 +122,7 @@ export function Header({ className = '' }: HeaderProps): JSX.Element {
                           type="button"
                           onClick={() => {
                             setCategoriesOpen(false);
-                            router.push('/experiences');
+                            router.push(`/experiences/${slugify(category.title)}`);
                           }}
                           className="block w-full text-left px-4 py-2 text-base font-host-grotesk text-[#312E29] hover:bg-gray-100 hover:text-[#6C3B3F] transition-colors"
                           tabIndex={0}
@@ -258,7 +261,7 @@ export function Header({ className = '' }: HeaderProps): JSX.Element {
                         onClick={() => {
                           setMenuOpen(false);
                           setCategoriesOpen(false);
-                          router.push('/experiences');
+                          router.push(`/experiences/${slugify(category.title)}`);
                         }}
                         className="text-base font-host-grotesk text-global-5 hover:text-header-1 px-3 py-2 rounded-sm hover:bg-global-5/5 transition-colors text-left w-full"
                         tabIndex={0}

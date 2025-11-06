@@ -2,11 +2,11 @@
 
 import Hero from '@/components/sections/Experiences/Hero'
 import React, { useEffect, useState } from 'react'
-import WhatIsIncluded from '../../components/sections/Experiences/WhatIsIncluded'
-import Testimonials from '../../components/sections/Experiences/Testimonials'
+import WhatIsIncluded from '../../../components/sections/Experiences/WhatIsIncluded'
+import Testimonials from '../../../components/sections/Experiences/Testimonials'
 import BlogCard from '@/components/sections/Blog/BlogCard'
 import EnquiryForm from '@/components/sections/Experiences/EnquiryForm'
-import vector from "../../../public/images/img_vector.svg"
+import vector from "../../../../public/images/img_vector.svg"
 import Image from 'next/image'
 import ExperienceWrapper from '@/components/sections/Experiences/ExperienceWrapper'
 
