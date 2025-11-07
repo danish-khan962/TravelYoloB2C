@@ -48,7 +48,7 @@ export function Header({ className = '' }: HeaderProps): JSX.Element {
           <div className="block sm:hidden flex-shrink-0">
             <Link href="/" aria-label="Go to homepage">
               <Image
-                src="/images/img_layer_7.svg"
+                src="/images/img_layer_3.svg"
                 alt="TravelYollo Logo"
                 width={260}
                 height={42}

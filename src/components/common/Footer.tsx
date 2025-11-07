@@ -1,14 +1,14 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 
 const Footer = () => {
 
     // Email form state
     const [email, setEmail] = useState("");
+    const [categoriesOpen, setCategoriesOpen] = useState(false);
 
     const handleFooterFormSubmit = (e: any) => {
         e.preventDefault();
@@ -16,6 +16,17 @@ const Footer = () => {
 
     // get latest year
     const year: number = new Date().getFullYear();
+
+    const travelCategories = [
+        { id: '1', title: 'Romantic Escapes' },
+        { id: '2', title: 'Family Getaways' },
+        { id: '3', title: 'Cultural Soujourns' },
+        { id: '4', title: 'Scenic Escapes' },
+        { id: '5', title: 'Wildlife Encounters' }
+    ];
+
+    const slugify = (title: string) =>
+        title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
     return (
         <section className='w-full  bg-[#312E29] pt-[44px] sm:pt-[83px] pb-0 '>
@@ -45,8 +56,6 @@ const Footer = () => {
                                 </span>
                                 <Link href={"tel:5619414991"} className='text-[14px] sm:text-base text-[#C9C9C9] font-host-grotesk hover:underline hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer'> +1 561-941-4991 </Link >
                             </Link>
-
-                            {/* <span className='text-[#494744]'> | </span> */}
 
                             <Link href={"mailto:contact@travelyollo.com"} className='flex flex-row items-center gap-x-2 justify-center'>
                                 <span>
@@ -82,11 +91,6 @@ const Footer = () => {
                                     <Image src={"/images/linkedin_icon.png"} alt={"linkedin"} height={58} width={58} className='h-[58px] w-[58px]' />
                                 </Link>
                             </span>
-                            {/* <span>
-                                <Link href={"https://www.x.com/profile.php?id=61573601551252"} target="_blank" rel="noopener noreferrer">
-                                    <Image src={"/images/x_icon.png"} alt={"x"} height={58} width={58} className='h-[58px] w-[58px]' />
-                                </Link>
-                            </span> */}
                             <span>
                                 <Link href={"https://www.instagram.com/travelyollo/"} target="_blank" rel="noopener noreferrer">
                                     <Image src={"/images/instagram_icon.png"} alt={"instagram"} height={58} width={58} className='h-[58px] w-[58px]' />
@@ -109,7 +113,58 @@ const Footer = () => {
                                 <span className='block sm:hidden text-[#C9C9C9]'> | </span>
                                 <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/destinations"}> Destinations </Link></li>
                                 <span className='block sm:hidden text-[#C9C9C9]'> | </span>
-                                <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/experiences"}> Experiences </Link></li>
+
+                                {/* Experiences Dropdown */}
+                                <li
+                                    className='relative text-[#C9C9C9] font-host-grotesk text-[13px] sm:text-[14px] md:text-base'
+                                    onMouseEnter={() => {
+                                        clearTimeout((window as any).footerDropdownTimer);
+                                        setCategoriesOpen(true);
+                                    }}
+                                    onMouseLeave={() => {
+                                        (window as any).footerDropdownTimer = setTimeout(() => {
+                                            setCategoriesOpen(false);
+                                        }, 250); // hold open for 250 ms
+                                    }}
+                                >
+                                    <div className='flex items-center gap-1 hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer select-none'>
+                                        Experiences
+                                        <svg
+                                            className={`w-4 h-4 transition-transform duration-200 ${categoriesOpen ? 'rotate-180' : ''}`}
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+
+                                    {categoriesOpen && (
+                                        <div
+                                            className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-300 py-2 z-50"
+                                            onMouseEnter={() => {
+                                                clearTimeout((window as any).footerDropdownTimer);
+                                                setCategoriesOpen(true);
+                                            }}
+                                            onMouseLeave={() => {
+                                                (window as any).footerDropdownTimer = setTimeout(() => {
+                                                    setCategoriesOpen(false);
+                                                }, 250);
+                                            }}
+                                        >
+                                            {travelCategories.map((category) => (
+                                                <Link
+                                                    key={category.id}
+                                                    href={`/experiences/${slugify(category.title)}`}
+                                                    className="block w-full text-left px-4 py-2 text-base font-host-grotesk text-[#312E29] hover:bg-gray-100 hover:text-[#6C3B3F] transition-colors text-[13px] sm:text-base"
+                                                >
+                                                    {category.title}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    )}
+                                </li>
+
                                 <span className='block sm:hidden text-[#C9C9C9]'> | </span>
                                 <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/trip-planner"}> Trip Planner </Link></li>
                                 <li className='text-[#C9C9C9] hover:underline font-host-grotesk hover:text-white hover:font-medium transition-all ease-in-out duration-200 cursor-pointer text-[13px] sm:text-[14px] md:text-base'><Link href={"/contact"}> Contact Us </Link></li>
@@ -181,7 +236,6 @@ const Footer = () => {
 
             {/* Footer banner - Mobile */}
             <div className='block sm:hidden w-full mt-[38px]'>
-                {/* <hr className='w-screen text-[#4B4843]' /> */}
                 <div className='w-screen bg-[#161616] flex flex-col gap-1 justify-center text-center'>
                     <p className='w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 text-[14px] mt-[22px] text-[#C9C9C9] font-host-grotesk font-light'> Copyright © {year} TravelYollo. All Rights Reserved.</p>
                     <p className='text-[14px] text-[#C9C9C9] font-host-grotesk font-light mb-[80px]'>

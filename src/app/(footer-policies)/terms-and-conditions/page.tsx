@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import React from "react"
 
 const TermsAndConditions = () => {
@@ -20,7 +21,7 @@ const TermsAndConditions = () => {
             <p className="font-host-grotesk leading-relaxed">
               Bookings are made with <strong>VZ TRAVELYOLLO PRIVATE LIMITED</strong>, CIN <strong>U79110MH2025PTC445161</strong>,
               trading as TravelYollo (TravelYollo.com), registered at <strong>A 802, AAKANKSHA, OFF YARI, RD, VERSOVA, ANDHERI WEST,
-              Vesava, Mumbai, Mumbai- 400061, Maharashtra</strong>.
+                Vesava, Mumbai, Mumbai- 400061, Maharashtra</strong>.
             </p>
           </div>
 
@@ -128,6 +129,136 @@ const TermsAndConditions = () => {
               </li>
             </ul>
           </div>
+
+          {/* Section 8  */}
+          <div>
+            <h2 className="text-2xl font-noto-serif text-[#6C3B3F] mb-4">
+              8) Cancellations/changes (by TravelYollo/Suppliers)
+            </h2>
+            <ul className="list-disc pl-6 font-host-grotesk space-y-2">
+              <li>
+                If a Supplier cancels/changes a service, remedies are per that Supplier’s policy (re-
+                accommodation, credit, or refund).
+              </li>
+              <li>If TravelYollo must materially alter an itinerary due to force majeure (e.g., weather, strikes,
+                political unrest, pandemics), we will endeavor to offer alternate arrangements; additional costs
+                may apply. TravelYollo is not responsible for consequential losses.</li>
+            </ul>
+          </div>
+
+          {/* Section 9  */}
+          <div>
+            <h2 className="text-2xl font-noto-serif text-[#6C3B3F] mb-4">
+              9) Travel insurance
+            </h2>
+            <ul className="list-disc pl-6 font-host-grotesk space-y-2">
+              <li>
+                We strongly recommend comprehensive insurance (trip cancellation, medical, evacuation, baggage).
+              </li>
+              <li>Insurance benefits are subject to the insurer&apos;s terms.</li>
+            </ul>
+          </div>
+
+          {/* Section 10  */}
+          <div>
+            <h2 className="text-2xl font-noto-serif text-[#6C3B3F] mb-4">
+              10) Health, conduct & risks
+            </h2>
+            <ul className="list-disc pl-6 font-host-grotesk space-y-2">
+              <li>
+                You are responsible for assessing fitness to travel and obtaining medical advice.
+              </li>
+              <li>Providers may refuse service due to safety concerns, intoxication, or misconduct without
+                refund.</li>
+              <li>Adventure activities carry inherent risks you voluntarily accept.</li>
+            </ul>
+          </div>
+
+          {/* Section 11  */}
+          <div>
+            <h2 className="text-2xl font-noto-serif text-[#6C3B3F] mb-4">
+              11) Limitation of liability
+            </h2>
+            <ul className="list-disc pl-6 font-host-grotesk space-y-2">
+              <li>
+                To the maximum extent permitted by law, TravelYollo’s total aggregate liability arising from a booking
+                is limited to the amount paid to TravelYollo for the affected service. TravelYollo shall not be liable for
+                indirect, incidental, special, or consequential damages, loss of enjoyment, or loss due to acts of God
+                or events beyond reasonable control.
+              </li>
+            </ul>
+          </div>
+
+          {/* Section 12  */}
+          <div>
+            <h2 className="text-2xl font-noto-serif text-[#6C3B3F] mb-4">
+              12) Complaints & support
+            </h2>
+            <ul className="list-disc pl-6 font-host-grotesk space-y-2">
+              <li>
+                Report issues promptly (ideally while in destination) so we can help. Post-trip complaints must be sent
+                to <Link href={"mailto:contact@travelyollo.com"}><span><strong>[contact@travelyollo.com]</strong></span></Link> within 14 days of return, with booking details and evidence.
+              </li>
+            </ul>
+          </div>
+
+          {/* Section 13  */}
+          <div>
+            <h2 className="text-2xl font-noto-serif text-[#6C3B3F] mb-4">
+              13) Intellectual property & site use
+            </h2>
+            <ul className="list-disc pl-6 font-host-grotesk space-y-2">
+              <li>
+                Site content (text, images, logos) is owned by TravelYollo or its licensors. You may not copy, scrape,
+                or use content except for personal, non-commercial use to evaluate our services.
+              </li>
+            </ul>
+          </div>
+
+          {/* Section 14  */}
+          <div>
+            <h2 className="text-2xl font-noto-serif text-[#6C3B3F] mb-4">
+              14) Promotional Photography
+            </h2>
+            <ul className="list-disc pl-6 font-host-grotesk space-y-2">
+              <li>
+                TravelYollo reserves the right to take photographs during the operation of any program or part
+                thereof and to use them for promotional purposes. By booking a reservation with the
+                TravelYollo program, members agree to allow their images to be used in such photographs.
+                Program members who prefer that their images not be used are asked to identify themselves in
+                writing to their travel program escort at the beginning of their program.
+              </li>
+            </ul>
+          </div>
+
+          {/* Section 15  */}
+          <div>
+            <h2 className="text-2xl font-noto-serif text-[#6C3B3F] mb-4">
+              15) Governing law & jurisdiction
+            </h2>
+            <ul className="list-disc pl-6 font-host-grotesk space-y-2">
+              <li>
+                These Terms are governed by the laws of India. Courts at [Mumbai, Maharashtra] shall have exclusive
+                jurisdiction, subject to applicable consumer protection law.
+              </li>
+            </ul>
+          </div>
+
+          {/* Section 16  */}
+          <div>
+            <h2 className="text-2xl font-noto-serif text-[#6C3B3F] mb-4">
+              16) Contact
+            </h2>
+            <ul className="list-disc pl-6 font-host-grotesk space-y-2">
+              <li>
+                [VZ TRAVELYOLLO PRIVATE LIMITED], CIN [U79110MH2025PTC445161]
+                [A 802,AAKANKSHA, OFF YARI, RD, VERSOVA, ANDHERI WEST, Vesava, Mumbai, Mumbai-
+                400061, Maharashtra] | <Link href={"mailto:contact@travelyollo.com"}>[contact@travelyollo.com]</Link> | <Link href={"tel:9821112284"}>[+91-9821112284]</Link>
+              </li>
+            </ul>
+          </div>
+
+
         </div>
       </section>
     </section>

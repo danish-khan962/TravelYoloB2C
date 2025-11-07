@@ -124,6 +124,15 @@ const Contact = () => {
           onChange={(e) => setHelpDetails(e.target.value)}
           rows={4}
         />
+
+        <div className="w-full flex justify-center items-center mt-[67px] md:mt-[55px]">
+          <button
+            type="submit"
+            className="bg-[#312E29] w-full md:w-[160px] h-[54px] text-white rounded-full hover:scale-105 transition-all ease-in-out duration-200 cursor-pointer text-[18px] font-host-grotesk"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   )

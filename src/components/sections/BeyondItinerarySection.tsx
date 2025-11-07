@@ -13,6 +13,7 @@ interface TravelCategory {
     title: string;
     subtitle: string;
     image: string;
+    hrefUrl: string;
 }
 
 const travelCategories: TravelCategory[] = [
@@ -20,31 +21,36 @@ const travelCategories: TravelCategory[] = [
         id: '1',
         title: 'Romantic Escapes',
         subtitle: 'Thrill meets luxury.',
-        image: '/images/romantic_escapes.jpg'
+        image: '/images/romantic_escapes.jpg',
+        hrefUrl: '/experiences/romantic-esapces'
     },
     {
         id: '2',
         title: 'Family Getaways',
         subtitle: 'Romance in style.',
-        image: '/images/family_getaways.jpg'
+        image: '/images/family_getaways.jpg',
+        hrefUrl: '/experiences/family-getaways'
     },
     {
         id: '3',
         title: 'Cultural Soujourns',
         subtitle: 'Travel that brings everyone closer.',
-        image: '/images/cultural_soujourns.jpeg'
+        image: '/images/cultural_soujourns.jpeg',
+        hrefUrl: '/experiences/cultural-soujourns'
     },
     {
         id: '4',
         title: 'Scenic Escapes',
         subtitle: 'Barefoot bliss, elevated.',
-        image: '/images/scenic_escapes.jpeg'
+        image: '/images/scenic_escapes.jpeg',
+        hrefUrl: '/experiences/scenic-escapes'
     },
     {
         id: '5',
         title: 'Wildlife Encounters',
         subtitle: 'Wildlife experience.',
-        image: '/images/wildlife_encounters.jpg'
+        image: '/images/wildlife_encounters.jpg',
+        hrefUrl: '/experiences/wildlife-encounters'
     }
 ];
 
@@ -229,53 +235,58 @@ const BeyondItinerarySection: React.FC = () => {
                     >
                         {travelCategories.map((category) => (
                             <SwiperSlide key={category.id} style={{ width: '33.3333%' }}>
-                                <div className="relative group w-full h-[320px] md:h-[420px] lg:h-[520px] xl:h-[600px] overflow-hidden flex-shrink-0">
-                                    <Image
-                                        src={category.image}
-                                        alt={category.title}
-                                        fill
-                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                    />
+                                <Link href={category.hrefUrl} className="block">
+                                    <div className="relative group w-full h-[320px] md:h-[420px] lg:h-[520px] xl:h-[600px] overflow-hidden flex-shrink-0">
+                                        <Image
+                                            src={category.image}
+                                            alt={category.title}
+                                            fill
+                                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
 
-                                    {/* Overlay background */}
-                                    <div className="absolute top-0 left-0 right-0 h-[80px] bg-[#F5F5F5] bg-opacity-0 group-hover:bg-opacity-90 transition-all duration-500 z-10 pointer-events-none"></div>
+                                        {/* Overlay background */}
+                                        <div className="absolute top-0 left-0 right-0 h-[80px] bg-[#F5F5F5] bg-opacity-0 group-hover:bg-opacity-90 transition-all duration-500 z-10 pointer-events-none"></div>
 
-                                    {/* Text content */}
-                                    <div className="absolute top-0 left-0 right-0 h-[70px] flex flex-col items-center justify-center px-6 py-2 text-center pointer-events-none -translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out z-20">
-                                        <h3 className="text-global-1 text-[32px] font-light italic font-noto-serif">
-                                            {category.title}
-                                        </h3>
+                                        {/* Text content */}
+                                        <div className="absolute top-0 left-0 right-0 h-[70px] flex flex-col items-center justify-center px-6 py-2 text-center pointer-events-none -translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out z-20">
+                                            <h3 className="text-global-1 text-[32px] font-light italic font-noto-serif">
+                                                {category.title}
+                                            </h3>
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             </SwiperSlide>
                         ))}
+
                     </Swiper>
                 </div>
 
                 {/* Mobile - Stacked Vertically */}
                 <div className="block sm:hidden flex-col w-full mt-4">
                     {travelCategories.map((category) => (
-                        <div
-                            key={category.id}
-                            className="relative group w-full h-[450px] overflow-hidden"
-                        >
-                            <Image
-                                src={category.image}
-                                alt={category.title}
-                                fill
-                                className="object-cover"
-                            />
+                        <Link href={category.hrefUrl} className='block'>
+                            <div
+                                key={category.id}
+                                className="relative group w-full h-[450px] overflow-hidden"
+                            >
+                                <Image
+                                    src={category.image}
+                                    alt={category.title}
+                                    fill
+                                    className="object-cover"
+                                />
 
-                            {/* Dim overlay on mobile */}
-                            <div className="absolute inset-0 bg-black bg-opacity-50 pointer-events-none"></div>
+                                {/* Dim overlay on mobile */}
+                                <div className="absolute inset-0 bg-black bg-opacity-50 pointer-events-none"></div>
 
-                            {/* Text content: always centered on mobile */}
-                            <div className="absolute top-0 left-0 right-0 h-full flex flex-col items-center justify-center px-4 py-2 text-center pointer-events-none">
-                                <h3 className="text-white text-[30px] font-light italic font-noto-serif">
-                                    {category.title}
-                                </h3>
+                                {/* Text content: always centered on mobile */}
+                                <div className="absolute top-0 left-0 right-0 h-full flex flex-col items-center justify-center px-4 py-2 text-center pointer-events-none">
+                                    <h3 className="text-white text-[30px] font-light italic font-noto-serif">
+                                        {category.title}
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </section>
