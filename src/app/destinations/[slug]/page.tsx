@@ -5,19 +5,54 @@ import WhatIsIncluded from '@/components/sections/Experiences/WhatIsIncluded'
 import Hero from '@/components/sections/Itinerary/Hero'
 import ItinerarySwiper from '@/components/sections/Itinerary/ItinerarySwiper'
 import Timeline from '@/components/sections/Itinerary/Timeline'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import dynamic from "next/dynamic"
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
+import ItinerarySkeleton from '@/components/sections/Itinerary/ItinerarySkeleton'
 
 const LeafletMap = dynamic(() => import('@/components/sections/Itinerary/LeafletMap'), {
-  ssr: false,
+    ssr: false,
 })
 
-const page = () => { 
+const page = () => {
+
+    const { slug } = useParams();
+    const [pkg, setPkg] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!slug) return;
+
+        const fetchPackageData = async () => {
+            try {
+                const isUUID = /^[0-9a-fA-F-]{8}-[0-9a-fA-F-]{4}-[0-9a-fA-F-]{4}-[0-9a-fA-F-]{4}-[0-9a-fA-F-]{12}$/.test(slug as string)
+
+                const res = await fetch(`/api/packages/${slug}`);
+                if (!res.ok) throw new Error(`Failed to fetch package: ${res.status}`);
+
+                const data = await res.json();
+                console.log("Fetched package details:", data);
+                setPkg(data);
+            } catch (err: any) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPackageData();
+    }, [slug]);
+
+    if (loading) return <ItinerarySkeleton />;
+    if (error) return <p className="text-center text-red-500 mt-20">Error: {error}</p>;
+    if (!pkg) return <p className="text-center mt-20">No package data found</p>;
+
     return (
         <div>
             {/* Hero section */}
-            <Hero />
+            <Hero title={pkg.title} image={pkg.image} duration={`(${pkg.duration_days}D / ${pkg.duration_nights}N)`} />
 
 
             {/* Overview */}
@@ -25,10 +60,10 @@ const page = () => {
                 <div className='flex flex-col items-start mt-[86px] sm:mt-[157px]'>
                     <h1 className='text-[32px] sm:text-[40px] text-[#6C3B3F] font-noto-serif font-light italic'>Overview</h1>
                     <p className='max-w-[911px] w-full font-host-grotesk font-light text-start text-base sm:text-[20px] mt-[18px] sm:mt-[24px] sm:leading-snug text-[#312E29] pr-0 sm:pr-2'>
-                      A seamless blend of heritage, opulence, and personalized service. Discover timeless sights, stay in handpicked luxury hotels, and enjoy curated private tours—all designed to immerse you in culture and comfort without compromise.
+                        {pkg.description}
                     </p>
                 </div>
-                
+
 
                 {/* Top attractions */}
                 <div className='mt-[66px] sm:[79px]'>
@@ -44,9 +79,9 @@ const page = () => {
                     <h1 className='text-[32px] sm:text-[40px] text-[#000000] font-noto-serif font-light italic'>Itinerary Plan</h1>
                     <div className='flex flex-col md:flex-row justify-between items-center gap-y-[129px] gap-x-[68px]'>
                         <div>
-                            <Timeline />
+                            <Timeline packageId={pkg.id} />
                         </div>
-                        <div className='h-[280px] sm:h-[400px] md:h-[750px] lg:h-[920px] xl:h-[880px] max-w-[660px] w-screen sm:w-full'>
+                        <div className='h-[280px] sm:h-[400px] md:h-[750px] lg:h-[920px] xl:h-[880px] max-w-[660px] w-screen sm:w-full z-0'>
                             <LeafletMap />
                         </div>
                     </div>
@@ -67,7 +102,7 @@ const page = () => {
             {/* Testimonials */}
             <div className='bg-[#F9F9F9] mt-[106px] sm:mt-[211px] pb-[94px] sm:pb-[218px]'>
                 <div className='w-full pt-[124px] md:pt-[192px]'>
-                    <Testimonials />
+                    <Testimonials packageId={pkg.id}/>
                 </div>
             </div>
 
@@ -76,9 +111,11 @@ const page = () => {
             <div className='w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pb-[100px]'>
                 <div className='flex sm:hidden flex-col sm:flex-row justify-center items-center sm:justify-start sm:items-start gap-4 mt-[100px] sm:mt-[148px]'>
                     <button className='w-full sm:w-[223px] h-[54px] bg-[#312E29] text-white rounded-full cursor-pointer hover:scale-105 transition-all ease-in-out duration-200'>Book now</button>
-                    
-                    <Link href={"/contact"}>
-                        <button className='w-full sm:w-[223px]  h-[54px] border border-[#312E29] bg-white rounded-full cursor-pointer hover:scale-105 transition-all ease-in-out duration-200'>Book Discovery call</button>
+
+                    <Link href={"/contact"} className="w-full">
+                        <button className='w-full sm:w-[223px] h-[54px] border border-[#312E29] bg-white rounded-full cursor-pointer hover:scale-105 transition-all ease-in-out duration-200'>
+                            Book Discovery call
+                        </button>
                     </Link>
                 </div>
             </div>

@@ -8,6 +8,8 @@ interface Destination {
   title: string;
   duration: string;
   image: string;
+  id: string;
+  slug: string;
 }
 
 const DestinationGrid: React.FC = () => {
@@ -15,20 +17,34 @@ const DestinationGrid: React.FC = () => {
   const [visibleCount, setVisibleCount] = useState(6);
   const [screenWidth, setScreenWidth] = useState<number>(0);
 
-  // Fetch JSON from public folder
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
-        const res = await fetch('/json/destinationsCardData.json');
+        const res = await fetch(`/api/packages?package_type=destination`);
+        if (!res.ok) throw new Error(`Failed to fetch destinations: ${res.status}`);
+
         const data = await res.json();
-        setDestinations(data);
+        console.log("Fetched destination packages:", data);
+
+        const formattedData = data.results.map((pkg: any) => ({
+          id: pkg.id,
+          slug: pkg.slug,
+          title: pkg.title || "Untitled",
+          duration: pkg.duration_days && pkg.duration_nights
+            ? `(${pkg.duration_days}D / ${pkg.duration_nights}N)`
+            : "",
+          image: pkg.image || "/images/default-package.jpg",
+        }));
+
+        setDestinations(formattedData);
       } catch (err) {
-        console.error('Error loading destination data:', err);
+        console.error("Error loading destination packages:", err);
       }
     };
 
     fetchDestinations();
   }, []);
+
 
   //  Track screen size for responsiveness
   useEffect(() => {
@@ -80,8 +96,10 @@ const DestinationGrid: React.FC = () => {
                   ))}
                 </>
               }
+              id={dest.id}
               duration={dest.duration}
               image={dest.image}
+              slug={dest.slug}
             />
           </div>
         ))}

@@ -28,38 +28,77 @@ const TravelerStoriesSection: React.FC = () => {
   // comment box state
   const [comment, setComment] = useState("");
 
-  const handleCommentSubmit = (e: any) => {
+  const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (comment.trim() === "") {
       toast.error("Please write something before submitting!");
       return;
     }
-    toast.success("Thank you for your comment!");
-    setComment("");
+
+    try {
+      const res = await fetch("/api/testimonials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ comment }),
+      });
+
+      if (!res.ok) throw new Error("Failed to post comment");
+
+      toast.success("Thank you for your comment!");
+      console.log(comment)
+      setComment("");
+    } catch (err) {
+      console.error(err);
+      toast.error("Could not submit your comment. Try again!");
+    }
   };
 
+
   useEffect(() => {
-    fetch('/json/testimonials.json')
-      .then((res) => res.json())
-      .then((data) => {
-        setTestimonials(data);
+    const fetchTestimonials = async () => {
+      try {
+        const response = await fetch("/api/testimonials");
+        if (!response.ok) {
+          throw new Error(`Failed to fetch testimonials: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetched testimonials:", data);
+
+        const formattedData = data.results.map((item: any) => ({
+          id: item.id,
+          content: item.content,
+          rating: item.rating,
+          tripTitle: item.trip_title,
+          profile: {
+            id: item.user?.id || "",
+            name: item.reviewer_name || item.user?.full_name || "Anonymous",
+            avatar: item.reviewer_avatar || "/images/default-avatar.jpg",
+          },
+        }));
+
+        setTestimonials(formattedData);
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching testimonials:', error);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchTestimonials();
   }, []);
 
+
   if (loading) {
-    return <p>Loading testimonials...</p>;
+    return <p className='text-center'>Loading testimonials...</p>;
   }
 
   return (
     <section className="w-full py-[80px] sm:py-[100px] lg:py-[120px]" style={{ backgroundColor: '#F9F9F9' }}>
       {/* Toast container */}
       <Toaster position="top-center" reverseOrder={false} />
-      
+
       <div className="max-w-[1440px] mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex flex-col gap-12 sm:gap-16 lg:gap-20 relative">
           <div className="text-left">

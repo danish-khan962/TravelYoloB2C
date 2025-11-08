@@ -8,12 +8,14 @@ interface DestinationCardProps {
   title: React.ReactNode;
   duration: string;
   image: string;
+  id: string;
+  slug: string;
 }
 
-const DestinationCard: React.FC<DestinationCardProps> = ({ title, duration, image }) => {
+const DestinationCard: React.FC<DestinationCardProps> = ({ title, duration, image, slug, id}) => {
   return (
     <div className="relative max-w-[450px] w-full h-[510px] sm:h-[550px] md:h-[580px] lg:h-[610px] rounded-xl overflow-hidden shadow-lg cursor-pointer">
-      <Link href={"/destinations/id"}>
+      <Link href={`/destinations/${slug}`}>
         <Image
           src={image}
           alt="image"

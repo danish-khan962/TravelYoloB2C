@@ -57,11 +57,13 @@ const travelCategories: TravelCategory[] = [
 const BeyondItinerarySection: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
+    const [hasMounted, setHasMounted] = useState(false);
     const totalItems = travelCategories.length;
     const swiperRef = useRef<any>(null);
 
-    // Check if mobile on mount and resize
     useEffect(() => {
+        setHasMounted(true);  // mark mounted on client
+
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 640);
         };
@@ -69,6 +71,11 @@ const BeyondItinerarySection: React.FC = () => {
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
+
+    if (!hasMounted) {
+        // Don't render UI dependent on isMobile until mounted
+        return null;
+    }
 
     const itemsToShow = isMobile ? 1 : 3;
     const maxIndex = totalItems - itemsToShow;
@@ -264,9 +271,8 @@ const BeyondItinerarySection: React.FC = () => {
                 {/* Mobile - Stacked Vertically */}
                 <div className="block sm:hidden flex-col w-full mt-4">
                     {travelCategories.map((category) => (
-                        <Link href={category.hrefUrl} className='block'>
+                        <Link href={category.hrefUrl} className='block' key={category.id}>
                             <div
-                                key={category.id}
                                 className="relative group w-full h-[450px] overflow-hidden"
                             >
                                 <Image

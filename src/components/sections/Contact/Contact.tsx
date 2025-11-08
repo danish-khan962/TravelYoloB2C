@@ -1,6 +1,7 @@
 "use client"
 import React from 'react'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 const Contact = () => {
 
@@ -10,6 +11,7 @@ const Contact = () => {
   const [countryCode, setCountryCode] = useState('+91');
   const [emailError, setEmailError] = useState('');
   const [helpDetails, setHelpDetails] = useState('');
+   const [loading, setLoading] = useState(false);
 
 
   const validateEmail = (email: string): boolean => {
@@ -35,19 +37,54 @@ const Contact = () => {
       setPhone(value);
     }
   };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate email before submission
-    if (email && !validateEmail(email)) {
-      setEmailError('Please enter a valid email address');
+    if (!name || !email) {
+      toast.error("Please fill out all required fields!");
       return;
     }
 
-    // Add your form submission logic here
-    console.log({ name, email, phone: `${countryCode}${phone}`, helpDetails });
+    if (email && !validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/trip-inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          full_name: name,
+          email,
+          country_code: countryCode,
+          phone,
+          trip_details: helpDetails, 
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to submit inquiry");
+
+      const data = await res.json();
+      console.log("Inquiry submitted:", data);
+
+      toast.success("Thank you! We’ve received your message.");
+
+      // Reset form
+      setName("");
+      setEmail("");
+      setPhone("");
+      setHelpDetails("");
+      setEmailError("");
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   return (
     <div className='relative w-full flex justify-center items-center'>
@@ -118,7 +155,7 @@ const Contact = () => {
           />
         </div>
         <textarea
-          placeholder='How can we help?'
+          placeholder='How can we help?*'
           className='w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk resize-vertical min-h-[100px]'
           value={helpDetails}
           onChange={(e) => setHelpDetails(e.target.value)}

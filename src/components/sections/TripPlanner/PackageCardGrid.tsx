@@ -13,6 +13,7 @@ interface Destination {
   title: string;
   duration: string;
   image: string;
+  slug: string
 }
 
 const PackageCardGrid: React.FC = () => {
@@ -20,20 +21,30 @@ const PackageCardGrid: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   useEffect(() => {
-    const fetchDestinations = async () => {
+    const fetchTrendingPackages = async () => {
       try {
-        const response = await fetch('/json/destinations.json');
-        if (!response.ok) {
-          throw new Error('Failed to fetch destinations');
-        }
-        const data: Destination[] = await response.json();
-        setDestinations(data);
-      } catch (error) {
-        console.error('Error fetching destinations:', error);
+        const res = await fetch('/api/packages?is_trending=true');
+        if (!res.ok) throw new Error(`Failed to fetch trending packages: ${res.status}`);
+
+        const data = await res.json();
+        console.log("Fetched trending packages:", data);
+
+        const formatted = data.results?.map((pkg: any) => ({
+          title: pkg.title || "Untitled",
+          duration:
+            pkg.duration_days && pkg.duration_nights
+              ? `${pkg.duration_days}D / ${pkg.duration_nights}N`
+              : "",
+          image: pkg.image || "/images/default-package.jpg",
+        })) || [];
+
+        setDestinations(formatted);
+      } catch (err) {
+        console.error("Error fetching trending packages:", err);
       }
     };
 
-    fetchDestinations();
+    fetchTrendingPackages();
   }, []);
 
   const renderTitle = (title: string) => {
@@ -59,12 +70,12 @@ const PackageCardGrid: React.FC = () => {
           <SwiperSlide
             key={index}
             style={{ width: '280px' }}
-            className={`!w-[320px] sm:!w-[320px] md:!w-[360px] transition-all duration-200 cursor-pointer ${
-              selectedIndex === index ? 'border-4 border-[#5F2E2E] rounded-2xl' : ''
-            }`}
+            className={`!w-[320px] sm:!w-[320px] md:!w-[360px] transition-all duration-200 cursor-pointer ${selectedIndex === index ? 'border-4 border-[#5F2E2E] rounded-2xl' : ''
+              }`}
             onClick={() => setSelectedIndex(index)}
           >
             <PackageCard
+              slug={dest.slug}
               title={renderTitle(dest.title)}
               duration={dest.duration}
               image={dest.image}

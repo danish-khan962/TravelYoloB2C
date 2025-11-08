@@ -48,6 +48,31 @@ const Banner = () => {
             </div>
           </div>
 
+          <div className='flex flex-row justify-center items-center'>
+            {/* Login Button */}
+            <Link
+              href="/"
+              role="menuitem"
+              className="
+    text-base lg:text-[17px] 2xl:text-[20px] 
+    font-host-grotesk font-normal 
+    leading-[22px] lg:leading-[27px] 
+    text-white
+    bg-global-5 hover:bg-global-5/90
+    border border-transparent
+    rounded-[18px]
+    px-4 py-1 lg:px-[30px] lg:py-[4px]
+    transition-all duration-200 ease-in-out
+    hover:scale-105
+    active:scale-95
+    focus:outline-none focus:ring-2 focus:ring-global-5 focus:ring-opacity-50
+    ml-2
+  "
+            >
+              Login
+            </Link>
+          </div>
+
         </div>
       </div>
     </div>

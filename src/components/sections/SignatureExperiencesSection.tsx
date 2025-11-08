@@ -11,7 +11,8 @@ import "swiper/css/pagination";
 
 interface Destination {
   title: string;
-  duration?: string;
+  duration_days?: number | string;
+  duration_nights?: number | string;
   image?: string;
 }
 
@@ -40,9 +41,17 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/json/destinations.json");
-        if (!res.ok) throw new Error("Failed to fetch destinations");
-        const data: Destination[] = await res.json();
+        const res = await fetch("/api/packages?is_signature=true");
+        if (!res.ok) throw new Error("Failed to fetch signature packages");
+
+        const json = await res.json();
+        const data: Destination[] = json.results.map((item: any) => ({
+          title: item.title || "Untitled",
+          duration_days: item.duration_days || "",
+          duration_nights: item.duration_nights || "",
+          image: item.image || "",
+        }));
+
         setRealDataLength(data.length);
 
         // Duplicate slides for the pseudo-loop effect
@@ -52,11 +61,12 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
 
         setDisplayData(loopedData);
       } catch (error) {
-        console.error("Error loading destinations:", error);
+        console.error("Error loading signature packages:", error);
       }
     }
     fetchData();
   }, []);
+
 
   const getYTransform = (slideIndex: number) => {
     const diff = slideIndex - activeIndex;
@@ -154,7 +164,7 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
               slideToClickedSlide={false}
               speed={600}
               navigation={false}
-              initialSlide={initialSlideIndex + slidesToDuplicate} 
+              initialSlide={initialSlideIndex + slidesToDuplicate}
               pagination={{
                 el: ".swiper-pagination-custom",
                 clickable: true,
@@ -206,17 +216,17 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
                   >
                     <div className="relative">
                       {experience.image ? (
-                        <Image
-                          src={experience.image}
-                          alt={
-                            typeof experience.title === "string"
+                        <div className="w-full h-[420px] rounded-t-[16px] overflow-hidden">
+                          <Image
+                            src={experience.image}
+                            alt={typeof experience.title === "string"
                               ? experience.title.replace(/\|\|/g, " ")
-                              : "Destination image"
-                          }
-                          width={350}
-                          height={454}
-                          className="w-full h-auto rounded-t-[16px]"
-                        />
+                              : "Destination image"}
+                            width={350}
+                            height={420}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                       ) : (
                         <div className="w-full aspect-[296/398] bg-global-7 animate-pulse rounded-t-[16px]" />
                       )}
@@ -227,9 +237,13 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
                       <h3 className="text-[14px] sm:text-[16px] font-host-grotesk font-medium leading-[20px] sm:leading-[22px] lg:leading-[26px] text-black flex-1">
                         {renderTitleWithBreaks(experience.title)}
                       </h3>
-                      {experience.duration && (
+                      {(experience.duration_days || experience.duration_nights) && (
                         <span className="text-[10px] sm:text-[12px] lg:text-[14px] font-host-grotesk font-normal leading-[13px] sm:leading-[16px] lg:leading-[19px] text-black ml-2 whitespace-nowrap">
-                          {experience.duration}
+                          {experience.duration_days && experience.duration_nights
+                            ? `(${experience.duration_days}D / ${experience.duration_nights}N)`
+                            : experience.duration_days
+                              ? `(${experience.duration_days}D`
+                              : `${experience.duration_nights}N)`}
                         </span>
                       )}
                     </div>

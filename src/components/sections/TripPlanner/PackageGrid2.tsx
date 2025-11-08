@@ -7,6 +7,7 @@ type Destination = {
   title: string;
   duration: string;
   image: string;
+  slug:string;
 };
 
 type Props = {
@@ -28,6 +29,7 @@ const PackageGrid2: React.FC<Props> = ({ destinations }) => {
           return (
             <div key={index} className="w-full">
               <PackageCard
+                slug={dest.slug}
                 title={formattedTitle}
                 duration={dest.duration}
                 image={dest.image}

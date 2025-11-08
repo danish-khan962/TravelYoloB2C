@@ -14,6 +14,8 @@ type BlogPost = {
   date: string
   title: string
   description: string
+  id: string
+  slug: string
 }
 
 const capsuleDate = [
@@ -33,18 +35,19 @@ const Page = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        const response = await fetch('/json/blogData.json')
-        if (!response.ok) throw new Error('Failed to load blog data')
-        const data = await response.json()
-        setBlogData(data)
-        setFilteredData(data)
+        const response = await fetch('/api/blogs');
+        if (!response.ok) throw new Error('Failed to load blog data');
+        const data = await response.json();
+        setBlogData(data);
+        setFilteredData(data);
       } catch (error) {
-        console.error('Error fetching blog data:', error)
+        console.error('Error fetching blog data:', error);
       }
-    }
+    };
 
-    fetchBlogData()
-  }, [])
+    fetchBlogData();
+  }, []);
+
 
   useEffect(() => {
     const checkMobile = () => {
@@ -174,12 +177,14 @@ const Page = () => {
           {visibleData.length > 0 ? (
             visibleData.map((post, index) => (
               <BlogCard
+                id={post.id}
                 key={index}
                 image={post.image}
                 author={post.author}
                 date={post.date}
                 title={post.title}
                 description={post.description}
+                slug={post.slug}
               />
             ))
           ) : (

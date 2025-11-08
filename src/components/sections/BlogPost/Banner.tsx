@@ -1,15 +1,19 @@
-import React from 'react'
-import Image from 'next/image'
-import blogBannerDesktop from '../../../../public/blog/blogPost/blogPost_1.png'
-import blogBannerMobile from '../../../../public/blog/blogPost/blogPostMobile_1.png'
+import React from "react";
+import Image from "next/image";
+import blogBannerDesktop from "../../../../public/blog/blogPost/blogPost_1.png";
+import blogBannerMobile from "../../../../public/blog/blogPost/blogPostMobile_1.png";
 
-const Banner = () => {
+interface BannerProps {
+  featured_image?: string;
+}
+
+const Banner: React.FC<BannerProps> = ({ featured_image }) => {
   return (
     <div className="relative w-full h-[80vh]">
 
       {/* Desktop Image */}
       <Image
-        src={blogBannerDesktop}
+        src={featured_image || blogBannerDesktop}
         alt="Blog banner desktop"
         fill
         priority
@@ -18,7 +22,7 @@ const Banner = () => {
 
       {/* Mobile Image */}
       <Image
-        src={blogBannerMobile}
+        src={featured_image || blogBannerMobile}
         alt="Blog banner mobile"
         fill
         priority
@@ -26,7 +30,7 @@ const Banner = () => {
       />
 
     </div>
-  )
-}
+  );
+};
 
-export default Banner
+export default Banner;

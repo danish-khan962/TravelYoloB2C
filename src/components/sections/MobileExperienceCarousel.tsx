@@ -11,8 +11,9 @@ import 'swiper/css/pagination';
 
 interface Destination {
   title: string;
+  duration_days?: number | string;
+  duration_nights?: number | string;
   image?: string;
-  duration?: string;
 }
 
 interface MobileExperienceCarouselProps {
@@ -63,25 +64,24 @@ const MobileExperienceCarousel: React.FC<MobileExperienceCarouselProps> = ({
   const [isLoop, setIsLoop] = useState(false);
 
   useEffect(() => {
-    const updateLoop = () => {
-      setIsLoop(window.innerWidth >= 640);
-    };
-
-    updateLoop();
-    window.addEventListener('resize', updateLoop);
-    return () => window.removeEventListener('resize', updateLoop);
-  }, []);
-
-  useEffect(() => {
-    const fetchDestinations = async () => {
+    async function fetchDestinations() {
       try {
-        const res = await fetch('/json/destinations.json');
-        const data = await res.json();
+        const res = await fetch("/api/packages?is_signature=true");
+        if (!res.ok) throw new Error("Failed to fetch signature packages");
+
+        const json = await res.json();
+        const data: Destination[] = json.results.map((item: any) => ({
+          title: item.title || "Untitled",
+          duration_days: item.duration_days || "",
+          duration_nights: item.duration_nights || "",
+          image: item.image || "",
+        }));
+
         setDestinations(data);
       } catch (error) {
-        console.error('Failed to load destinations:', error);
+        console.error("Error loading signature packages:", error);
       }
-    };
+    }
 
     fetchDestinations();
   }, []);
@@ -140,15 +140,21 @@ const MobileExperienceCarousel: React.FC<MobileExperienceCarouselProps> = ({
                     <div className="relative w-full max-w-[400px] transition-transform duration-300 ease-out">
                       <div className="relative">
                         {experience.image ? (
-                          <Image
-                            src={experience.image}
-                            alt={typeof experience.title === 'string' ? experience.title : 'Destination image'}
-                            width={296}
-                            height={398}
-                            className="w-full h-auto rounded-t-[16px]"
-                          />
+                          <div className="w-full h-[420px] rounded-t-[16px] overflow-hidden">
+                            <Image
+                              src={experience.image}
+                              alt={
+                                typeof experience.title === "string"
+                                  ? experience.title
+                                  : "Destination image"
+                              }
+                              width={296}
+                              height={420}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         ) : (
-                          <div className="w-full aspect-[296/398] bg-global-7 animate-pulse rounded-t-[16px]" />
+                          <div className="w-full h-[420px] bg-global-7 animate-pulse rounded-t-[16px]" />
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-global-1/80 to-transparent rounded-t-[16px]" />
                       </div>
@@ -157,18 +163,22 @@ const MobileExperienceCarousel: React.FC<MobileExperienceCarouselProps> = ({
                         <h3 className="text-[14px] font-host-grotesk font-medium leading-[18px] text-black flex-1 line-clamp-3">
                           {typeof experience.title === 'string'
                             ? experience.title.split('||').map((line, idx) => (
-                                <React.Fragment key={idx}>
-                                  {line}
-                                  {idx !== experience.title.split('||').length - 1 && <br />}
-                                </React.Fragment>
-                              ))
+                              <React.Fragment key={idx}>
+                                {line}
+                                {idx !== experience.title.split('||').length - 1 && <br />}
+                              </React.Fragment>
+                            ))
                             : null}
                         </h3>
-                        {experience.duration && (
-                          <span className="text-[10px] font-host-grotesk font-normal leading-[13px] text-black ml-2 whitespace-nowrap">
-                            {experience.duration}
-                          </span>
-                        )}
+                        {(experience.duration_days || experience.duration_nights) && (
+                        <span className="text-[10px] sm:text-[12px] lg:text-[14px] font-host-grotesk font-normal leading-[13px] sm:leading-[16px] lg:leading-[19px] text-black ml-2 whitespace-nowrap">
+                          {experience.duration_days && experience.duration_nights
+                            ? `(${experience.duration_days}D / ${experience.duration_nights}N)`
+                            : experience.duration_days
+                              ? `(${experience.duration_days}D`
+                              : `${experience.duration_nights}N)`}
+                        </span>
+                      )}
                       </div>
                     </div>
                   </SwiperSlide>

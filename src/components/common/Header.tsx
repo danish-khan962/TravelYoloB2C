@@ -33,7 +33,7 @@ export function Header({ className = '' }: HeaderProps): JSX.Element {
     { label: 'Destinations', href: '/destinations', active: pathname === '/destinations' },
     { label: 'Experiences', href: '/experiences', active: pathname === '/experiences' },
     { label: 'Trip Planner', href: '/trip-planner', active: pathname === '/trip-planner' },
-    // { label: 'Blog', href: '/blog', active: pathname === '/blog' },
+    { label: 'Blog', href: '/blog', active: pathname === '/blog' },
     { label: 'Contact Us', href: '/contact', active: pathname === '/contact' }
   ] as const;
 
@@ -41,7 +41,7 @@ export function Header({ className = '' }: HeaderProps): JSX.Element {
     title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
   return (
-    <header className={`sticky z-[999999] top-0 sm:top-14 md:top-16 w-full bg-header-1 ${className}`}>
+    <header className={`sticky z-[999] top-0 sm:top-14 md:top-16 w-full bg-header-1 ${className}`}>
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between sm:justify-center items-center py-4 sm:py-6 gap-2">
           {/* Logo */}

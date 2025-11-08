@@ -6,10 +6,17 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    domains: ["ty-public-id8nxt.s3.amazonaws.com", "core.travelyolo.id8nxt.com"],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'picsum.photos',
+        hostname: 'ty-public-id8nxt.s3.amazonaws.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'core.travelyolo.id8nxt.com',
+        pathname: '/**',
       },
     ],
   },
@@ -17,11 +24,14 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.(jsx|tsx)$/,
       exclude: [/node_modules/],
-      use: [{
-        loader: '@dhiwise/component-tagger/nextLoader',
-      }],
+      use: [
+        {
+          loader: '@dhiwise/component-tagger/nextLoader',
+        },
+      ],
     });
     return config;
   },
 };
+
 export default nextConfig;

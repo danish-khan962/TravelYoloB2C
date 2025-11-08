@@ -5,6 +5,7 @@ import CalendarSection from '@/components/sections/TripPlanner/CalendarSection';
 import Hero from '@/components/sections/TripPlanner/Hero';
 import PackageCardGrid from '@/components/sections/TripPlanner/PackageCardGrid';
 import PackageGrid2 from '@/components/sections/TripPlanner/PackageGrid2';
+import toast from 'react-hot-toast';
 
 const Page: React.FC = () => {
   const [destinations, setDestinations] = useState<any[]>([]);
@@ -17,12 +18,36 @@ const Page: React.FC = () => {
   const [emailError, setEmailError] = useState('');
   const [tripDetails, setTripDetails] = useState('');
 
+  const [plannerData, setPlannerData] = useState<any>({});
+
+
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    fetch('/json/popularPackages.json')
-      .then((res) => res.json())
-      .then((data) => setDestinations(data))
-      .catch((err) => console.error('Error loading packages:', err));
+    const fetchPopularPackages = async () => {
+      try {
+        const res = await fetch("/api/packages?package_type=popular");
+        const data = await res.json();
+        const formatted = data.results?.map((pkg: any) => ({
+          id: pkg.id,
+          slug: pkg.slug || "",
+          title: pkg.title || "Untitled",
+          image: pkg.image || "/images/default-package.jpg",
+          duration:
+            pkg.duration_days && pkg.duration_nights
+              ? `${pkg.duration_days}D / ${pkg.duration_nights}N`
+              : "",
+        }));
+        setDestinations(formatted);
+      } catch (err) {
+        console.error("Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPopularPackages();
   }, []);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,18 +82,47 @@ const Page: React.FC = () => {
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+ const handleFormSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    // Validate email before submission
-    if (email && !validateEmail(email)) {
-      setEmailError('Please enter a valid email address');
-      return;
+  if (!name || !email) {
+    toast.error("Please fill in name and email!");
+    return;
+  }
+
+  const payload = {
+    full_name: name,
+    email,
+    country_code: countryCode,
+    phone,
+    trip_details: tripDetails,
+    ...plannerData, //  includes destination, traveler_count, budget_min, etc.
+  };
+
+  console.log("Sending payload:", payload);
+
+  try {
+    const res = await fetch("/api/trip-inquiries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Failed: ${res.status} ${text}`);
     }
 
-    // Add your form submission logic here
-    console.log({ name, email, phone: `${countryCode}${phone}`, tripDetails });
-  };
+    const data = await res.json();
+    console.log("Trip inquiry submitted:", data);
+    toast.success("Trip inquiry submitted successfully!");
+  } catch (err) {
+    console.error("Submission error:", err);
+    toast.error("Error submitting trip inquiry!");
+  }
+};
+
+
 
   const handleShowMore = () => {
     setVisibleCount((prev) => prev + 3);
@@ -91,7 +145,7 @@ const Page: React.FC = () => {
       </div>
 
       <div className='flex justify-center items-center mt-[77px]'>
-        <CalendarSection />
+        <CalendarSection onDataChange={setPlannerData} />
       </div>
 
       <div className='w-full flex justify-center items-center mt-[45px] px-4'>
@@ -107,9 +161,8 @@ const Page: React.FC = () => {
             <input
               type='email'
               placeholder='Email*'
-              className={`w-full text-[18px] font-normal outline-none border rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk ${
-                emailError ? 'border-red-500' : 'border-[#98B6E2]'
-              }`}
+              className={`w-full text-[18px] font-normal outline-none border rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk ${emailError ? 'border-red-500' : 'border-[#98B6E2]'
+                }`}
               value={email}
               onChange={handleEmailChange}
             />
@@ -202,7 +255,40 @@ const Page: React.FC = () => {
           </p>
         </div>
 
-        <PackageGrid2 destinations={packagesToShow} />
+        {loading ? (
+          // Skeleton Loader Section
+          <div className="max-w-[1400px] w-full mx-auto">
+            <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6 justify-items-center">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="animate-pulse relative max-w-[450px] w-full h-[510px] sm:h-[550px] md:h-[580px] lg:h-[610px] rounded-xl overflow-hidden bg-gray-200 shadow-md"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-[shimmer_2s_infinite] bg-[length:200%_100%]" />
+
+                  <div className="absolute bottom-0 left-0 w-full h-[72px] bg-gray-100 z-10 flex justify-between items-center px-5">
+                    <div className="h-4 w-[70%] bg-gray-300 rounded"></div>
+                    <div className="h-4 w-[20%] bg-gray-300 rounded"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Small pulse CSS animation keyframes */}
+            <style jsx>{`
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+    `}</style>
+          </div>
+        ) : (
+          <PackageGrid2 destinations={packagesToShow} />
+        )}
 
         {isSmallScreen && visibleCount < destinations.length && (
           <div className='flex justify-center items-center mt-[70px] mb-[130px]'>

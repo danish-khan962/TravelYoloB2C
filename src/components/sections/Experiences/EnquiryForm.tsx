@@ -36,7 +36,61 @@ const EnquiryForm = () => {
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent) => {const handleFormSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  // Validate required fields
+  if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+    toast.error("Please fill in First Name, Last Name, and Email before submitting.");
+    return;
+  }
+
+  if (email && !validateEmail(email)) {
+    setEmailError("Please enter a valid email address");
+    toast.error("Please enter a valid email address.");
+    return;
+  }
+
+  const fullName = `${firstName.trim()} ${lastName.trim()}`;
+  const payload = {
+    full_name: fullName,
+    email,
+    country_code: countryCode,
+    phone,
+    trip_details: message || "No message provided",
+  };
+
+  try {
+    const res = await fetch("/api/trip-inquiries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to submit inquiry: ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log("Inquiry submitted successfully:", data);
+
+    toast.success("Your enquiry has been submitted successfully!");
+
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhone("");
+    setMessage("");
+
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 4000);
+  } catch (err) {
+    console.error("Error submitting enquiry:", err);
+    toast.error("Something went wrong. Please try again later.");
+  }
+};
+
     e.preventDefault();
 
     // Strict required field validation

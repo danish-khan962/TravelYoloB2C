@@ -41,7 +41,7 @@ const travelItems = [
     text: (
       <>
         Trusted by Travelers <br />
-        Who’ve Seen the World
+        Who&apos;ve Seen the World
       </>
     ),
     image: '/images/img_4_shutterstock_1995820526.png',

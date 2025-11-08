@@ -120,7 +120,7 @@ const page = () => {
 
         {/* Testimonials */}
         <div className='pt-[120px] sm:pt-[150px]'>
-          <Testimonials />
+          <Testimonials  />
         </div>
 
         {/* Blogs */}

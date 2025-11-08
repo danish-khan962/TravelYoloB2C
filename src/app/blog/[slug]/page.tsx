@@ -1,7 +1,7 @@
 "use client";
 
 import Banner from "@/components/sections/BlogPost/Banner";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { TfiHeart } from "react-icons/tfi";
@@ -16,12 +16,16 @@ import x_icon from "../../../../public/images/x_icon.png";
 import facebook_icon from "../../../../public/images/facebook_icon.png";
 import instagram_icon from "../../../../public/images/instagram_icon.png";
 
-import blogInternalData from "../../../../public/json/blogInternalData.json"; // ✅ JSON import
+import blogInternalData from "../../../../public/json/blogInternalData.json";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { useParams } from "next/navigation";
+import BlogPostSkeleton from "@/components/sections/Blog/BlogPostSkeleton";
+
+import { useRouter } from "next/navigation";
 
 // Map JSON image keys to actual imports
 const imageMap: Record<string, any> = {
@@ -41,24 +45,145 @@ const socialLinks = [
 const Page = () => {
   const [favourite, setFavourite] = useState(true);
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [relatedBlogs, setRelatedBlogs] = useState<any[]>([]);
 
-  // Get first blog entry from JSON
+
+  interface BlogDetails {
+    id?: string;
+    slug?: string;
+    title?: string;
+    author?: string;
+    date?: string;
+    featured_image?: string;
+    paragraphs?: {
+      desktop: string[];
+      mobile: string[];
+    };
+    quote?: {
+      desktop: string;
+      mobile: string;
+    };
+    related_blogs?: any[];
+  }
+
+  const [blogDetails, setBlogDetails] = useState<BlogDetails | null>(null);
+
+  // Latest posts for sidebar (static)
   const blogData = blogInternalData[0];
   const blogCards = blogData.blogCards.map((card) => ({
     ...card,
     image: imageMap[card.image] || blogCard_1,
   }));
 
+  const { slug } = useParams();
+
+  // Pagination for blogs
+  const router = useRouter();
+
+  const currentIndex = relatedBlogs.findIndex(
+    (item) => item.blog.slug === slug
+  );
+
+  const handleNextBlog = () => {
+    if (relatedBlogs.length === 0) return;
+    const nextIndex = (currentIndex + 1) % relatedBlogs.length;
+    const nextSlug = relatedBlogs[nextIndex]?.blog.slug;
+    if (nextSlug) router.push(`/blog/${nextSlug}`);
+  };
+
+  const handlePrevBlog = () => {
+    if (relatedBlogs.length === 0) return;
+    const prevIndex =
+      (currentIndex - 1 + relatedBlogs.length) % relatedBlogs.length;
+    const prevSlug = relatedBlogs[prevIndex]?.blog.slug;
+    if (prevSlug) router.push(`/blog/${prevSlug}`);
+  };
+  console.log("Current slug:", slug, "Related blogs:", relatedBlogs.length);
+
+
+  // Fetch Blogs details via /blogs/{slug}
+  useEffect(() => {
+    async function fetchBlogDetails() {
+      try {
+        if (!slug || typeof slug !== "string") return; // 
+        console.log("Fetching blog for slug:", slug);
+        const res = await fetch(`/api/blogs/${slug}`, {
+          headers: { "Content-Type": "application/json" },
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          console.error("Failed to fetch blog:", res.status, text);
+          throw new Error(`Failed with status ${res.status}`);
+        }
+
+        const data = await res.json();
+        console.log("Blog fetched successfully:", data);
+
+        // set blog and stop loading
+        setBlogDetails(data);
+        setLoading(false);
+      } catch (err: any) {
+        console.error("Error while fetching:", err);
+        setError(err.message);
+        setLoading(false);
+      }
+    }
+
+    fetchBlogDetails();
+  }, [slug]);
+
+  // Fetch related blog posts via /blog-related/
+  useEffect(() => {
+    async function fetchRelatedBlogs() {
+      try {
+        const res = await fetch("/api/blog-related", {
+          headers: { "Content-Type": "application/json" },
+          cache: "no-store",
+        });
+
+        if (!res.ok) throw new Error(`Failed to fetch related blogs: ${res.status}`);
+        const data = await res.json();
+        console.log("Related blogs fetched:", data);
+
+        const latestThree = (data.results || []).slice(0, 3);
+        setRelatedBlogs(latestThree);
+      } catch (err) {
+        console.error("Error fetching related blogs:", err);
+      }
+    }
+
+    fetchRelatedBlogs();
+  }, []);
+
+
+
+  if (loading)
+    return (
+      <BlogPostSkeleton />
+    );
+
+  if (error)
+    return (
+      <div className="flex justify-center items-center min-h-screen text-red-500">
+        Failed to load blog: {error}
+      </div>
+    );
+
   return (
     <div className="relative w-screen">
-      <Banner />
+      <Banner featured_image={blogDetails?.featured_image} />
 
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col mdplus:flex-row md:justify-between md:items-start mt-[25px] md:mt-[37px] gap-x-[26px]">
         {/* Left section */}
         <div className="w-full mdplus:w-[70%] mdplus:border-r border-[#D0D0D0] pr-0 mdplus:pr-[26px] pb-0 sm:pb-[30px] mdplus:pb-[160px] lg:pb-[190px] md:mb-8">
           <div className="flex flex-row justify-between items-center">
             <p className="font-host-grotesk font-normal italic text-base md:text-[20px] text-[#6C3B3F]">
-              By {blogData.author} • {blogData.date}
+              By {blogDetails?.author || "TravelYolo Team"} •{" "}
+              {blogDetails?.date || ""}
             </p>
             <span className="text-[24px] md:text-[26px] translate-y-0 lg:translate-y-[38px] cursor-pointer">
               {favourite ? (
@@ -73,20 +198,20 @@ const Page = () => {
           </div>
 
           <h2 className="max-w-[277px] w-full sm:max-w-[900px] text-[32px] md:text-[40px] text-[#000000] font-noto-serif font-medium italic mt-[55px] md:mt-[13px] leading-tight">
-            {blogData.title}
+            {blogDetails?.title || "Untitled Blog"}
           </h2>
 
           {/* Paragraphs */}
           <div className="max-w-[1057px] w-full flex flex-col mt-[16px] md:mt-[70px]">
             <div className="flex flex-col gap-y-[30px]">
-              {blogData.paragraphs.mobile.map((p, i) => (
+              {(blogDetails?.paragraphs?.mobile || []).map((p, i) => (
                 <p
                   key={`mobile-${i}`}
                   className="block md:hidden text-[18px] md:text-[20px] font-normal text-[#6D6D6D] font-host-grotesk leading-[26px]"
                   dangerouslySetInnerHTML={{ __html: p }}
                 />
               ))}
-              {blogData.paragraphs.desktop.map((p, i) => (
+              {(blogDetails?.paragraphs?.desktop || []).map((p, i) => (
                 <p
                   key={`desktop-${i}`}
                   className="hidden md:block text-[18px] md:text-[20px] font-normal text-[#6D6D6D] font-host-grotesk leading-[26px]"
@@ -97,23 +222,23 @@ const Page = () => {
 
             <div className="mt-[68px] md:mt-[67px]">
               <h1 className="hidden md:block max-w-[859px] w-full font-noto-serif font-light italic text-[#6C3B3F] text-[32px] leading-snug">
-                {blogData.quote.desktop}
+                {blogDetails?.quote?.desktop || ""}
               </h1>
               <h1 className="block md:hidden font-noto-serif font-light italic text-[#6C3B3F] text-[32px] leading-snug">
-                {blogData.quote.mobile}
+                {blogDetails?.quote?.mobile || ""}
               </h1>
             </div>
 
             {/* Second Paragraphs */}
             <div className="flex flex-col gap-y-[30px] mt-[21px] md:mt-[67px]">
-              {blogData.secondSet.mobile.map((p, i) => (
+              {(blogDetails?.paragraphs?.mobile || []).map((p, i) => (
                 <p
                   key={`sm-${i}`}
                   className="block md:hidden text-[18px] md:text-[20px] font-normal text-[#6D6D6D] font-host-grotesk leading-[26px]"
                   dangerouslySetInnerHTML={{ __html: p }}
                 />
               ))}
-              {blogData.secondSet.desktop.map((p, i) => (
+              {(blogDetails?.paragraphs?.desktop || []).map((p, i) => (
                 <p
                   key={`lg-${i}`}
                   className="hidden md:block text-[18px] md:text-[20px] font-normal text-[#6D6D6D] font-host-grotesk leading-[26px]"
@@ -130,14 +255,14 @@ const Page = () => {
 
             {/* Third Paragraphs */}
             <div className="flex flex-col gap-y-[30px] mt-[49px] md:mt-[59px]">
-              {blogData.thirdSet.mobile.map((p, i) => (
+              {(blogDetails?.paragraphs?.mobile || []).map((p, i) => (
                 <p
                   key={`m3-${i}`}
                   className="block md:hidden text-[18px] md:text-[20px] font-normal text-[#6D6D6D] font-host-grotesk leading-[26px]"
                   dangerouslySetInnerHTML={{ __html: p }}
                 />
               ))}
-              {blogData.thirdSet.desktop.map((p, i) => (
+              {(blogDetails?.paragraphs?.desktop || []).map((p, i) => (
                 <p
                   key={`d3-${i}`}
                   className="hidden md:block text-[18px] md:text-[20px] font-normal text-[#6D6D6D] font-host-grotesk leading-[26px]"
@@ -149,38 +274,44 @@ const Page = () => {
 
           <hr className="h-[1px] w-full bg-[#D0D0D0] mt-[56px] md:mt-[53px]" />
 
-          {/*  Swiper buttons Mobile */}
+          {/* Swiper buttons Mobile */}
           <div className="flex flex-row justify-between items-center sm:hidden gap-2 mt-[23px]">
-              <Link href={"#"}>
-                <span className="relative flex justify-center items-center text-start w-[170px] h-[75px] border border-[#312E29] group max-380:w-[160px]"> 
-                  <p className="absolute left-[66px] font-noto-serif text-[20px] text-[#312E29] italic font-light leading-snug"> Previous <br /> blog </p>  
-                  <Image
-                  src={chevronLeft}
-                  alt="previous blog"
-                  width={1000}
-                  height={1000}
-                  className="w-[21px] h-[43px] absolute left-[21px]"
-                  />
-                </span>
-              </Link>
+            <span
+              onClick={handlePrevBlog}
+              className="relative flex justify-center items-center text-start w-[170px] h-[75px] border border-[#312E29] group max-380:w-[160px] cursor-pointer"
+            >
+              <p className="absolute left-[66px] font-noto-serif text-[20px] text-[#312E29] italic font-light leading-snug">
+                Previous <br /> blog
+              </p>
+              <Image
+                src={chevronLeft}
+                alt="previous blog"
+                width={1000}
+                height={1000}
+                className="w-[21px] h-[43px] absolute left-[21px]"
+              />
+            </span>
 
-              <Link href={"#"}>
-                <span className="relative flex justify-center items-center text-start w-[170px] h-[75px] border border-[#312E29] group max-380:w-[160px]"> 
-                  <p className="absolute right-[66px] font-noto-serif text-[20px] text-[#312E29] italic font-light leading-snug"> Next <br /> blog </p>  
-                  <Image
-                  src={chevronRight}
-                  alt="next blog"
-                  width={1000}
-                  height={1000}
-                  className="w-[21px] h-[43px] absolute right-[21px]"
-                  />
-                </span>
-              </Link>
+            <span
+              onClick={handleNextBlog}
+              className="relative flex justify-center items-center text-start w-[170px] h-[75px] border border-[#312E29] group max-380:w-[160px] cursor-pointer"
+            >
+              <p className="absolute right-[66px] font-noto-serif text-[20px] text-[#312E29] italic font-light leading-snug">
+                Next <br /> blog
+              </p>
+              <Image
+                src={chevronRight}
+                alt="next blog"
+                width={1000}
+                height={1000}
+                className="w-[21px] h-[43px] absolute right-[21px]"
+              />
+            </span>
           </div>
+
 
           {/* Swiper blogs desktop */}
           <div className="hidden sm:flex items-center justify-between mt-[23px] relative">
-            {/* Left Chevron */}
             <div className="flex-shrink-0 cursor-pointer z-10" id="custom-prev">
               <Image src={chevronLeft} alt="previous" width={21} height={43} />
             </div>
@@ -194,18 +325,9 @@ const Page = () => {
               loop={true}
               className="w-full max-w-[calc(100%-120px)] mx-[40px]"
               breakpoints={{
-                320: {
-                  slidesPerView: 2,
-                  spaceBetween: 30,
-                },
-                768: {
-                  slidesPerView: 2,
-                  spaceBetween: 40,
-                },
-                1024: {
-                  slidesPerView: 2,
-                  spaceBetween: 170,
-                },
+                320: { slidesPerView: 2, spaceBetween: 30 },
+                768: { slidesPerView: 2, spaceBetween: 40 },
+                1024: { slidesPerView: 2, spaceBetween: 170 },
               }}
             >
               {blogCards.map((card) => (
@@ -218,15 +340,16 @@ const Page = () => {
                       height={1000}
                       className="w-[107px] h-[73px] rounded-lg"
                     />
-                    <p className="max-w-[228px] w-full font-medium text-base font-host-grotesk">
-                      {card.title}
-                    </p>
+                    <Link href={`/blog/${(card as any)?.slug || card.id}`}>
+                      <p className="max-w-[228px] w-full font-medium text-base font-host-grotesk hover:underline cursor-pointer">
+                        {card.title}
+                      </p>
+                    </Link>
                   </div>
                 </SwiperSlide>
               ))}
             </Swiper>
 
-            {/* Right Chevron */}
             <div className="flex-shrink-0 cursor-pointer z-10" id="custom-next">
               <Image src={chevronRight} alt="next" width={21} height={43} />
             </div>
@@ -240,25 +363,29 @@ const Page = () => {
               Latest post
             </h2>
             <div className="flex flex-col mt-[27px] max-w-[371px] w-full">
-              {blogCards.map((card) => (
-                <div
-                  key={card.id}
-                  className="flex flex-row items-center gap-x-[10px] mt-[13px] first:mt-0"
-                >
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    width={1000}
-                    height={1000}
-                    className="w-[107px] h-[73px] rounded-lg"
-                  />
-                  <Link href={"/#"}>
-                    <p className="max-w-[228px] w-full font-medium text-base font-host-grotesk hover:underline cursor-pointer">
-                      {card.title}
-                    </p>
-                  </Link>
-                </div>
-              ))}
+              {relatedBlogs.length > 0 ? (
+                relatedBlogs.map((item) => (
+                  <div
+                    key={item.blog.id}
+                    className="flex flex-row items-center gap-x-[10px] mt-[13px] first:mt-0"
+                  >
+                    <Image
+                      src={item.blog.featured_image || blogCard_1}
+                      alt={item.blog.title}
+                      width={1000}
+                      height={1000}
+                      className="w-[107px] h-[73px] rounded-lg object-cover"
+                    />
+                    <Link href={`/blog/${item.blog.slug}`}>
+                      <p className="max-w-[228px] w-full font-medium text-base font-host-grotesk hover:underline cursor-pointer">
+                        {item.blog.title}
+                      </p>
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p className="text-[#6D6D6D] text-sm mt-3">No related blogs found.</p>
+              )}
               <hr className="h-[1px] bg-[#D0D0D0] w-full mt-[63px] md:mt-[76px]" />
             </div>
           </div>

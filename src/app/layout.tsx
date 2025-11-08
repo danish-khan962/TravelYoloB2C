@@ -6,6 +6,7 @@ import Banner from '@/components/common/Banner';
 import { Toaster } from 'react-hot-toast';
 import BannerMobile from '@/components/common/BannerMobile';
 
+
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -29,7 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Toaster/>
+        <Toaster
+        position="top-center"
+          toastOptions={{
+            style: {
+              zIndex: 999999999, 
+            },
+          }}/>
         <Banner />
         <BannerMobile />
         <Header />

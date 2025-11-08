@@ -9,12 +9,14 @@ type BlogCardProps = {
   date: string
   title: string
   description: string
+  id: string
+  slug: string
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ image, author, date, title, description }) => {
+const BlogCard: React.FC<BlogCardProps> = ({ image, author, date, title, description, slug }) => {
   return (
     <div className='max-w-[640px] w-full border-2 rounded-lg shadow-md'>
-      <Link href={"/blog/blogpost_id"}>
+      <Link href={`/blog/${slug}`}>
         <Image
         src={image}
         alt='blog_card_img'
