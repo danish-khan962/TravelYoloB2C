@@ -71,7 +71,7 @@ const Hero = () => {
               backgroundPosition:
                 index === 1
                   ? isMobile
-                    ? "30% center"
+                    ? ""
                     : "center"
                   : "center",
             }}
@@ -100,13 +100,13 @@ const Hero = () => {
 
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-start pt-[150px] sm:pt-0 sm:justify-center items-center gap-y-[66px] px-4 h-full text-center">
-          <h1 className="block md:hidden font-noto-serif font-light italic text-[34px] sm:text-[40px] md:text-[45px] lg:text-[52px] leading-[42px] sm:leading-[45px] md:leading-[55px] lg:leading-[65px]">
+          <h1 className="font-noto-serif font-light italic text-[34px] sm:text-[40px] md:text-[45px] lg:text-[52px] leading-[42px] sm:leading-[45px] md:leading-[55px] lg:leading-[65px]">
             Let's start planning your unforgettable journey.
           </h1>
-          <h1 className="hidden md:block font-noto-serif font-light italic text-[34px] sm:text-[40px] md:text-[45px] lg:text-[52px] leading-[42px] sm:leading-[45px] md:leading-[55px] lg:leading-[65px]">
+          {/* <h1 className="hidden md:block font-noto-serif font-light italic text-[34px] sm:text-[40px] md:text-[45px] lg:text-[52px] leading-[42px] sm:leading-[45px] md:leading-[55px] lg:leading-[65px]">
             Let's start planning your <br />
             unforgettable journey.
-          </h1>
+          </h1> */}
         </div>
       </div>
     </section>

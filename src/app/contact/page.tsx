@@ -60,7 +60,7 @@ const page = () => {
 
       <div className='w-full bg-[#F9F9F9] px-4 md:px-0'>
         <div className=' pt-20 pb-10'>
-          <h1 className='font-noto-serif font-light italic text-[32px]  md:text-[40px] text-[#6C3B3F] text-start md:text-center'>FAQ</h1>
+          <h1 className='font-noto-serif font-light italic text-[32px]  md:text-[40px] text-[#6C3B3F] text-start md:text-center'>FAQs</h1>
           <p className='text-[16px] md:text-[18px] text-[#312E29] mt-5 capitalize text-start md:text-center'>You Might Be Wondering....</p>
         </div>
 

@@ -223,14 +223,18 @@ const Page: React.FC = () => {
             rows={4}
           />
 
-          <button
-            className='w-full sm:w-[241px] h-[55px] bg-[#312E29] text-white hover:scale-105 cursor-pointer transition-all ease-in-out duration-200 mt-[46px] sm:mt-[57px] rounded-full'
-            onClick={handleFormSubmit}
-          >
-            Talk to an Expert
-          </button>
+          <div className='w-full flex justify-center items-center'>
+            <button
+              className='w-full sm:w-[241px] h-[55px] bg-[#312E29] text-white hover:scale-105 cursor-pointer transition-all ease-in-out duration-200 mt-[46px] sm:mt-[57px] rounded-full'
+              onClick={handleFormSubmit}
+            >
+              Talk to an Expert
+            </button>
+          </div>
 
-          <div className='text-[20px] mt-[55px] font-host-grotesk ml-4'>Suggested packages</div>
+          <p className='font-noto-serif text-[32px] sm:text-[40px] font-light italic leading-tight text-start sm:text-start mt-[16px]  lg:ml-[-100px] xl:ml-[-305px]'>
+            Suggested Packages
+          </p>
           <div className='w-screen lg:ml-[-35%]'>
             <PackageCardGrid />
           </div>

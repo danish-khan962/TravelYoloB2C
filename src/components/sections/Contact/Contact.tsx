@@ -40,7 +40,7 @@ const Contact = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !email) {
+    if (!name || !email || !phone || !countryCode || !helpDetails) {
       toast.error("Please fill out all required fields!");
       return;
     }

@@ -116,8 +116,8 @@ const HeroSection = () => {
                 ? item.backgroundImageMobile
                 : item.backgroundImage.src})`,
               backgroundPosition:
-        index === 5 || index === 6 ? "80% center" : "center",
-        zIndex: index === activeIndex ? 5 : 1,
+                index === 5 || index === 6 ? "80% center" : "center",
+              zIndex: index === activeIndex ? 5 : 1,
             }}
           />
         ))}

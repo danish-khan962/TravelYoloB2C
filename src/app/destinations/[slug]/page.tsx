@@ -268,7 +268,7 @@ const page = () => {
                     <h1 className='text-[32px] sm:text-[40px] text-[#000000] font-noto-serif font-light italic'>Itinerary Plan</h1>
                     <div className='flex flex-col md:flex-row justify-between items-center gap-y-[129px] gap-x-[68px]'>
                         <div>
-                            <Timeline packageId={pkg.id} />
+                            <Timeline packageSlug={pkg.slug} />
                         </div>
                         <div className='h-[280px] sm:h-[400px] md:h-[750px] lg:h-[920px] xl:h-[880px] max-w-[660px] w-screen sm:w-full z-0'>
                             <LeafletMap slug={slug as string} />

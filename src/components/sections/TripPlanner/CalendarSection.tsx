@@ -74,7 +74,7 @@ export default function CalendarSection({ onDataChange }: { onDataChange?: (data
 
         {/* Travelers */}
         <div>
-          <label className='block mb-2 font-normal text-[20px] ml-2'>How Many Are Travelling?</label>
+          <label className='block mb-2 font-normal text-[20px] ml-2'>How many are travelling?</label>
           <div className='relative'>
             <input
               type="number"

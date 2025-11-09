@@ -50,6 +50,11 @@ const Page = () => {
   const [error, setError] = useState<string | null>(null);
   const [relatedBlogs, setRelatedBlogs] = useState<any[]>([]);
 
+  // Blogs fetchhing for desktop swiper pagination
+  const [swiperBlogs, setSwiperBlogs] = useState<any[]>([]);
+
+  // Blogs fetching for mobile pagination
+  const [allBlogs, setAllBlogs] = useState<any[]>([]);
 
 
   interface BlogDetails {
@@ -92,21 +97,89 @@ const Page = () => {
   );
 
   const handleNextBlog = () => {
-    if (relatedBlogs.length === 0) return;
-    const nextIndex = (currentIndex + 1) % relatedBlogs.length;
-    const nextSlug = relatedBlogs[nextIndex]?.blog.slug;
+    if (allBlogs.length === 0 || !slug) return;
+
+    const currentIndex = allBlogs.findIndex((b) => b.slug === slug);
+    const nextIndex = currentIndex === -1
+      ? 0
+      : (currentIndex + 1) % allBlogs.length;
+
+    const nextSlug = allBlogs[nextIndex]?.slug;
     if (nextSlug) router.push(`/blog/${nextSlug}`);
   };
 
   const handlePrevBlog = () => {
-    if (relatedBlogs.length === 0) return;
-    const prevIndex =
-      (currentIndex - 1 + relatedBlogs.length) % relatedBlogs.length;
-    const prevSlug = relatedBlogs[prevIndex]?.blog.slug;
+    if (allBlogs.length === 0 || !slug) return;
+
+    const currentIndex = allBlogs.findIndex((b) => b.slug === slug);
+    const prevIndex = currentIndex === -1
+      ? 0
+      : (currentIndex - 1 + allBlogs.length) % allBlogs.length;
+
+    const prevSlug = allBlogs[prevIndex]?.slug;
     if (prevSlug) router.push(`/blog/${prevSlug}`);
   };
   console.log("Current slug:", slug, "Related blogs:", relatedBlogs.length);
 
+  // Fetch all blogs for mobile pagination
+  useEffect(() => {
+    async function fetchAllBlogs() {
+      try {
+        const res = await fetch(`/api/blogs?limit=100&page=1`, {
+          headers: { "Content-Type": "application/json" },
+          cache: "no-store",
+        });
+
+        if (!res.ok) throw new Error(`Failed to fetch blogs: ${res.status}`);
+
+        const data = await res.json();
+        const blogs = Array.isArray(data.results)
+          ? data.results
+          : Array.isArray(data)
+            ? data
+            : [];
+
+        setAllBlogs(blogs);
+      } catch (err) {
+        console.error("Error fetching blogs for mobile pagination:", err);
+        setAllBlogs([]);
+      }
+    }
+
+    fetchAllBlogs();
+  }, []);
+
+
+  // For swiper
+  useEffect(() => {
+    async function fetchSwiperBlogs() {
+      try {
+        const res = await fetch(`/api/blogs?limit=4&page=1`, {
+          headers: { "Content-Type": "application/json" },
+          cache: "no-store",
+        });
+
+        if (!res.ok) throw new Error(`Failed to fetch blogs: ${res.status}`);
+
+        const data = await res.json();
+        console.log("Swiper blogs fetched:", data);
+
+        // Handle both shapes: { results: [...] } or direct array
+        const blogs = Array.isArray(data.results)
+          ? data.results
+          : Array.isArray(data)
+            ? data
+            : [];
+
+        setSwiperBlogs(blogs.slice(0, 4)); // Only show 4
+      } catch (err) {
+        console.error("Error fetching swiper blogs:", err);
+        setSwiperBlogs([]);
+      }
+    }
+
+    fetchSwiperBlogs();
+  }, []);
 
   // Fetch Blogs details via /blogs/{slug}
   useEffect(() => {
@@ -406,8 +479,9 @@ const Page = () => {
 
           {/* Swiper blogs desktop */}
           <div className="hidden sm:flex items-center justify-between mt-[23px] relative">
-            <div className="flex-shrink-0 cursor-pointer z-10" id="custom-prev">
-              <Image src={chevronLeft} alt="previous" width={21} height={43} />
+            {/* Left Chevron */}
+            <div className="flex-shrink-0 cursor-pointer z-10">
+              <Image id="custom-prev" src={chevronLeft} alt="previous" width={21} height={43} />
             </div>
 
             <Swiper
@@ -419,33 +493,45 @@ const Page = () => {
               loop={true}
               className="w-full max-w-[calc(100%-120px)] mx-[40px]"
               breakpoints={{
-                320: { slidesPerView: 2, spaceBetween: 30 },
+                320: { slidesPerView: 1, spaceBetween: 20 },
                 768: { slidesPerView: 2, spaceBetween: 40 },
                 1024: { slidesPerView: 2, spaceBetween: 170 },
               }}
             >
-              {blogCards.map((card) => (
-                <SwiperSlide key={card.id}>
-                  <div className="flex flex-col md:flex-row justify-center text-center md:text-start items-center gap-[10px]">
-                    <Image
-                      src={card.image}
-                      alt={card.title}
-                      width={1000}
-                      height={1000}
-                      className="w-[107px] h-[73px] rounded-lg"
-                    />
-                    <Link href={`/blog/${(card as any)?.slug || card.id}`}>
-                      <p className="max-w-[228px] w-full font-medium text-base font-host-grotesk hover:underline cursor-pointer">
-                        {card.title}
-                      </p>
-                    </Link>
-                  </div>
+              {swiperBlogs.length > 0 ? (
+                swiperBlogs.map((item: any) => (
+                  <SwiperSlide key={item.slug || item.id}>
+                    <div className="flex flex-col md:flex-row justify-center text-center md:text-start items-center gap-[10px]">
+                      <Image
+                        src={
+                          item.featured_image ||
+                          item.blog?.featured_image || 
+                          item.image ||
+                          blogCard_1
+                        }
+                        alt={item.title || item.blog?.title || "Blog image"}
+                        width={1000}
+                        height={1000}
+                        className="w-[107px] h-[73px] rounded-lg object-cover"
+                      />
+                      <Link href={`/blog/${item.slug}`}>
+                        <p className="max-w-[228px] w-full font-medium text-base font-host-grotesk hover:underline cursor-pointer">
+                          {item.title}
+                        </p>
+                      </Link>
+                    </div>
+                  </SwiperSlide>
+                ))
+              ) : (
+                <SwiperSlide>
+                  <p className="text-[#6D6D6D] text-center w-full">No blogs found.</p>
                 </SwiperSlide>
-              ))}
+              )}
             </Swiper>
 
-            <div className="flex-shrink-0 cursor-pointer z-10" id="custom-next">
-              <Image src={chevronRight} alt="next" width={21} height={43} />
+            {/* Right Chevron */}
+            <div className="flex-shrink-0 cursor-pointer z-10">
+              <Image id="custom-next" src={chevronRight} alt="next" width={21} height={43} />
             </div>
           </div>
         </div>

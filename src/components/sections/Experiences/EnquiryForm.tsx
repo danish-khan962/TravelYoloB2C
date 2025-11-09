@@ -36,66 +36,67 @@ const EnquiryForm = () => {
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {const handleFormSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleFormSubmit = (e: React.FormEvent) => {
+    const handleFormSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
 
-  // Validate required fields
-  if (!firstName.trim() || !lastName.trim() || !email.trim()) {
-    toast.error("Please fill in First Name, Last Name, and Email before submitting.");
-    return;
-  }
+      // Validate required fields
+      if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+        toast.error("Please fill in First Name, Last Name, and Email before submitting.");
+        return;
+      }
 
-  if (email && !validateEmail(email)) {
-    setEmailError("Please enter a valid email address");
-    toast.error("Please enter a valid email address.");
-    return;
-  }
+      if (email && !validateEmail(email)) {
+        setEmailError("Please enter a valid email address");
+        toast.error("Please enter a valid email address.");
+        return;
+      }
 
-  const fullName = `${firstName.trim()} ${lastName.trim()}`;
-  const payload = {
-    full_name: fullName,
-    email,
-    country_code: countryCode,
-    phone,
-    trip_details: message || "No message provided",
-  };
+      const fullName = `${firstName.trim()} ${lastName.trim()}`;
+      const payload = {
+        full_name: fullName,
+        email,
+        country_code: countryCode,
+        phone,
+        trip_details: message || "No message provided",
+      };
 
-  try {
-    const res = await fetch("/api/trip-inquiries", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+      try {
+        const res = await fetch("/api/trip-inquiries", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to submit inquiry: ${errorText}`);
-    }
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Failed to submit inquiry: ${errorText}`);
+        }
 
-    const data = await res.json();
-    console.log("Inquiry submitted successfully:", data);
+        const data = await res.json();
+        console.log("Inquiry submitted successfully:", data);
 
-    toast.success("Your enquiry has been submitted successfully!");
+        toast.success("Your enquiry has been submitted successfully!");
 
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPhone("");
-    setMessage("");
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPhone("");
+        setMessage("");
 
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 4000);
-  } catch (err) {
-    console.error("Error submitting enquiry:", err);
-    toast.error("Something went wrong. Please try again later.");
-  }
-};
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 4000);
+      } catch (err) {
+        console.error("Error submitting enquiry:", err);
+        toast.error("Something went wrong. Please try again later.");
+      }
+    };
 
     e.preventDefault();
 
     // Strict required field validation
-    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
-      toast.error("Please fill in First Name, Last Name, and Email before submitting.");
+    if (!firstName.trim() || !lastName.trim() || !email.trim() || !phone.trim() || countryCode.trim() || !message.trim()) {
+      toast.error("Please fill in all the required fields before submitting.");
       return;
     }
 
@@ -222,7 +223,7 @@ const EnquiryForm = () => {
           </div>
           <input
             type='tel'
-            placeholder='Phone'
+            placeholder='Phone*'
             className='flex-1 text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk'
             value={phone}
             onChange={handlePhoneChange}
@@ -231,7 +232,7 @@ const EnquiryForm = () => {
           />
         </div>
         <textarea
-          placeholder='Tell us more about your travel plans'
+          placeholder='Tell us more about your travel plans*'
           className='w-full text-[18px] font-normal outline-none border border-[#98B6E2] rounded p-3 placeholder:text-[#727272] placeholder:text-[16px] font-host-grotesk resize-vertical min-h-[100px]'
           value={message}
           onChange={(e) => setMessage(e.target.value)}

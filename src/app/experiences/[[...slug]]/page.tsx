@@ -91,7 +91,16 @@ const page = () => {
       <Hero />
 
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 mt-[17px]">
-        <p className='font-host-grotesk text-base sm:text-[18px] md:text-[22px] lg:text-[24px]'> Experiences{"  >>  "} <span className='text-[#6C3B3F]'> Adventure </span> </p>
+        <p className='font-host-grotesk text-base sm:text-[18px] md:text-[22px] lg:text-[24px]'>
+          Experiences{"  >>  "}
+          <span className='text-[#6C3B3F]'>
+            {slug
+              ? slug
+                .replace(/-/g, " ") // turn hyphens into spaces
+                .replace(/\b\w/g, (char) => char.toUpperCase()) // capitalize each word
+              : "Adventure"}
+          </span>
+        </p>
 
         <div className='flex flex-col items-start mt-[55px] sm:mt-[70px]'>
           <h1 className='text-[32px] sm:text-[40px] text-[#000000] font-noto-serif font-light italic'>Package Overview</h1>
@@ -120,7 +129,7 @@ const page = () => {
 
         {/* Testimonials */}
         <div className='pt-[120px] sm:pt-[150px]'>
-          <Testimonials packageId=""  />
+          <Testimonials packageId="" />
         </div>
 
         {/* Blogs */}

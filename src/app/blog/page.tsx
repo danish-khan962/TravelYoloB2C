@@ -33,20 +33,41 @@ const Page = () => {
   const capsuleContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const fetchBlogData = async () => {
-      try {
-        const response = await fetch('/api/blogs');
-        if (!response.ok) throw new Error('Failed to load blog data');
-        const data = await response.json();
-        setBlogData(data);
-        setFilteredData(data);
-      } catch (error) {
-        console.error('Error fetching blog data:', error);
-      }
-    };
+  const fetchBlogData = async () => {
+    try {
+      const response = await fetch('/api/blogs');
+      if (!response.ok) throw new Error('Failed to load blog data');
+      const data = await response.json();
 
-    fetchBlogData();
-  }, []);
+      const normalized = (data.results || data).map((item: any) => {
+  const clean = (str: string) =>
+    str?.replace(/<[^>]*>?/gm, '').replace(/\s+/g, ' ').trim();
+
+  const content =
+  clean(item.excerpt)?.slice(0, 120) ||
+  clean(item.content_desktop)?.slice(0, 120) ||
+  clean(item.summary) ||
+  '';
+
+  return {
+    id: item.id || item._id || '',
+    slug: item.slug || item.blog_slug || '',
+    image: item.featured_image || item.image || '/blog/default.png',
+    author: item.author || 'TravelYollo Team',
+    date: item.date || '',
+    title: item.title || item.blog_title || 'Untitled',
+    description: content ? content + '' : 'Click to read more.',
+  };
+});
+      setBlogData(normalized);
+      setFilteredData(normalized);
+    } catch (error) {
+      console.error('Error fetching blog data:', error);
+    }
+  };
+
+  fetchBlogData();
+}, []);
 
 
   useEffect(() => {
