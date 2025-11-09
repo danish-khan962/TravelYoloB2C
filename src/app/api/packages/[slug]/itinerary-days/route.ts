@@ -8,16 +8,14 @@ export async function GET(
   console.log("Fetching itinerary-days for slug:", slug);
 
   try {
-    // Fetch package by slug to get its ID
+    // Step 1: Fetch package by slug
     const packageUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}packages/${slug}/`;
-    console.log("Package fetch URL:", packageUrl);
-
     const packageRes = await fetch(packageUrl, {
       headers: { "Content-Type": "application/json" },
     });
 
     if (!packageRes.ok) {
-      console.error(" Package fetch failed:", packageRes.status);
+      console.error("Package fetch failed:", packageRes.status);
       return NextResponse.json(
         { error: "Failed to fetch package details", status: packageRes.status },
         { status: packageRes.status }
@@ -25,21 +23,17 @@ export async function GET(
     }
 
     const packageData = await packageRes.json();
-    console.log(" Package fetched:", packageData);
-
     const packageId = packageData.id;
     if (!packageId) {
-      console.error(" No package ID found in response:", packageData);
+      console.error("No package ID found in response:", packageData);
       return NextResponse.json(
         { error: "Package ID not found" },
         { status: 500 }
       );
     }
 
-    // Fetch itinerary days using that package ID
+    // Step 2: Fetch itinerary days
     const itineraryUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}itinerary-days/?package=${packageId}`;
-    console.log("Itinerary fetch URL:", itineraryUrl);
-
     const itineraryRes = await fetch(itineraryUrl, {
       headers: { "Content-Type": "application/json" },
       cache: "no-store",
@@ -56,6 +50,7 @@ export async function GET(
     const itineraryData = await itineraryRes.json();
     console.log("Itinerary fetched:", itineraryData);
 
+    // Step 3: Format result with lat/lng
     const formatted =
       itineraryData?.results?.map((day: any) => ({
         id: day.id,
@@ -65,6 +60,8 @@ export async function GET(
           typeof day.activities === "object"
             ? JSON.stringify(day.activities, null, 2)
             : String(day.activities || ""),
+        latitude: day.latitude || null,  
+        longitude: day.longitude || null, 
       })) || [];
 
     return NextResponse.json(formatted, { status: 200 });

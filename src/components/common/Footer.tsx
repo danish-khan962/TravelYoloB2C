@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
 
 const Footer = () => {
 
@@ -10,10 +11,44 @@ const Footer = () => {
     const [email, setEmail] = useState("");
     const [categoriesOpen, setCategoriesOpen] = useState(false);
 
-    const handleFooterFormSubmit = (e: any) => {
+    const handleFooterFormSubmit = async (e: any) => {
         e.preventDefault();
-    }
 
+        if (!email.trim()) {
+            toast.error("Please enter your email.");
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.trim())) {
+            toast.error("Please enter a valid email address.");
+            return;
+        }
+
+        try {
+            const res = await fetch("/api/newsletter", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: email.trim(),
+                    is_subscribed: true,
+                }),
+            });
+
+            if (!res.ok) {
+                const errData = await res.text();
+                console.error("Newsletter error:", errData);
+                toast.error("Subscription failed. Please try again later.");
+                return;
+            }
+
+            setEmail("");
+            toast.success("Subscribed to newsletter!");
+        } catch (err) {
+            console.error("Newsletter error:", err);
+            toast.error("Something went wrong. Please try again.");
+        }
+    };
     // get latest year
     const year: number = new Date().getFullYear();
 

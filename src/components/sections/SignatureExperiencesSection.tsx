@@ -41,7 +41,7 @@ const SignatureExperiencesSection: React.FC<SignatureExperiencesSectionProps> = 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/packages?is_signature=true");
+        const res = await fetch("/api/packages?package_type=signature");
         if (!res.ok) throw new Error("Failed to fetch signature packages");
 
         const json = await res.json();

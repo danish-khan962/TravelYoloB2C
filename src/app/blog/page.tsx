@@ -18,7 +18,7 @@ type BlogPost = {
   slug: string
 }
 
-const capsuleDate = [
+const capsuleData = [
   "Travel Tips", "Destination Guides", "Packing and Visa info", "Culture & Food"
 ]
 
@@ -115,7 +115,7 @@ const Page = () => {
             </p>
           </div>
 
-          <div className="w-full">
+          {/* <div className="w-full">
             {isMobile ? (
               <Swiper
                 spaceBetween={16}
@@ -123,7 +123,7 @@ const Page = () => {
                 className="px-4"
                 grabCursor={true}
               >
-                {capsuleDate.map((data, index) => (
+                {capsuleData.map((data, index) => (
                   <SwiperSlide key={index} style={{ width: '198px' }}>
                     <div
                       onClick={() => handleCapsuleClick(index)}
@@ -139,7 +139,7 @@ const Page = () => {
               </Swiper>
             ) : (
               <div className="flex justify-center items-center gap-x-5">
-                {capsuleDate.map((data, index) => (
+                {capsuleData.map((data, index) => (
                   <div
                     key={index}
                     onClick={() => handleCapsuleClick(index)}
@@ -153,7 +153,7 @@ const Page = () => {
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
         </div>
 
         {/* Search bar */}

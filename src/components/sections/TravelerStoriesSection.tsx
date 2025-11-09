@@ -43,7 +43,9 @@ const TravelerStoriesSection: React.FC = () => {
         body: JSON.stringify({ comment }),
       });
 
-      if (!res.ok) throw new Error("Failed to post comment");
+      if (!res.ok) {
+        throw new Error(`Failed to fetch testimonials: ${res.status}`);
+      }
 
       toast.success("Thank you for your comment!");
       console.log(comment)
@@ -58,7 +60,7 @@ const TravelerStoriesSection: React.FC = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const response = await fetch("/api/testimonials");
+        const response = await fetch("/api/testimonials?is_approved=true");
         if (!response.ok) {
           throw new Error(`Failed to fetch testimonials: ${response.status}`);
         }

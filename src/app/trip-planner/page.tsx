@@ -82,45 +82,45 @@ const Page: React.FC = () => {
     }
   };
 
- const handleFormSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (!name || !email) {
-    toast.error("Please fill in name and email!");
-    return;
-  }
-
-  const payload = {
-    full_name: name,
-    email,
-    country_code: countryCode,
-    phone,
-    trip_details: tripDetails,
-    ...plannerData, //  includes destination, traveler_count, budget_min, etc.
-  };
-
-  console.log("Sending payload:", payload);
-
-  try {
-    const res = await fetch("/api/trip-inquiries", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`Failed: ${res.status} ${text}`);
+    if (!name || !email) {
+      toast.error("Please fill in name and email!");
+      return;
     }
 
-    const data = await res.json();
-    console.log("Trip inquiry submitted:", data);
-    toast.success("Trip inquiry submitted successfully!");
-  } catch (err) {
-    console.error("Submission error:", err);
-    toast.error("Error submitting trip inquiry!");
-  }
-};
+    const payload = {
+      full_name: name,
+      email,
+      country_code: countryCode,
+      phone,
+      trip_details: tripDetails,
+      ...plannerData, //  includes destination, traveler_count, budget_min, etc.
+    };
+
+    console.log("Sending payload:", payload);
+
+    try {
+      const res = await fetch("/api/trip-inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed: ${res.status} ${text}`);
+      }
+
+      const data = await res.json();
+      console.log("Trip inquiry submitted:", data);
+      toast.success("Trip inquiry submitted successfully!");
+    } catch (err) {
+      console.error("Submission error:", err);
+      toast.error("Error submitting trip inquiry!");
+    }
+  };
 
 
 
@@ -231,7 +231,6 @@ const Page: React.FC = () => {
           </button>
 
           <div className='text-[20px] mt-[55px] font-host-grotesk ml-4'>Suggested packages</div>
-
           <div className='w-screen lg:ml-[-35%]'>
             <PackageCardGrid />
           </div>

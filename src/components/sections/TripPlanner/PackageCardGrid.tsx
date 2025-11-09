@@ -23,7 +23,7 @@ const PackageCardGrid: React.FC = () => {
   useEffect(() => {
     const fetchTrendingPackages = async () => {
       try {
-        const res = await fetch('/api/packages?is_trending=true');
+        const res = await fetch('/api/packages?package_type=trending');
         if (!res.ok) throw new Error(`Failed to fetch trending packages: ${res.status}`);
 
         const data = await res.json();
@@ -36,6 +36,7 @@ const PackageCardGrid: React.FC = () => {
               ? `${pkg.duration_days}D / ${pkg.duration_nights}N`
               : "",
           image: pkg.image || "/images/default-package.jpg",
+          slug: pkg.slug || "",
         })) || [];
 
         setDestinations(formatted);

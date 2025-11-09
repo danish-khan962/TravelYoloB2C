@@ -190,7 +190,7 @@ const HomePage: React.FC = () => {
           <SignatureExperiencesWrapper />
 
           <div className="hidden md:flex justify-center mt-[37px] sm:mt-[45px] lg:mt-[50px] px-4 sm:px-6 lg:px-8">
-            <Link href={"/experiences"}>
+            <Link href={"/experiences/romantic-escapes"}>
               <Button
               variant="primary"
               size="md"
@@ -203,13 +203,15 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="flex md:hidden justify-center mt-[37px] px-4">
-          <Button
+          <Link className='w-full' href={"/experiences/romantic-escapes"}>
+              <Button
             variant="primary"
             size="md"
             className="bg-global-13 text-global-5 rounded-full w-[241px] h-[54px] text-[18px] font-host-grotesk font-normal hover:scale-105 transition-all duration-200"
           >
             View All Experiences
           </Button>
+          </Link>
         </div>
 
         {/* Beyond the Itinerary & Travel Categories Section */}

@@ -1,32 +1,24 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const base = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || "";
-    const backendUrl = `${base.replace(/\/+$/, "")}/blog-related/`;
-
-    console.log("Fetching related blogs from:", backendUrl);
+    const { searchParams } = new URL(req.url);
+    const slug = searchParams.get("slug");
+    const backendUrl = slug
+      ? `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}blog-related/?slug=${slug}`
+      : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}blog-related/`;
 
     const res = await fetch(backendUrl, {
+      method: "GET",
       headers: { "Content-Type": "application/json" },
-      cache: "no-store",
     });
 
-    if (!res.ok) {
-      const text = await res.text();
-      console.error("Backend error:", res.status, text);
-      return NextResponse.json(
-        { error: "Failed to fetch related blogs", status: res.status, details: text },
-        { status: res.status }
-      );
-    }
-
-    const data = await res.json();
-    return NextResponse.json(data, { status: 200 });
-  } catch (err: any) {
-    console.error("Error fetching related blogs:", err);
+    const text = await res.text();
+    return new NextResponse(text, { status: res.status });
+  } catch (error) {
+    console.error("Error in /api/blog-related proxy:", error);
     return NextResponse.json(
-      { error: "Internal Server Error", details: err?.message ?? String(err) },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }

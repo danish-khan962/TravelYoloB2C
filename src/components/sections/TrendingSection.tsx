@@ -23,7 +23,7 @@ const TrendingSection: React.FC = () => {
     useEffect(() => {
         const fetchTrendingPackages = async () => {
             try {
-                const response = await fetch(`/api/packages?is_trending=true`);
+                const response = await fetch(`/api/packages?package_type=trending`);
                 if (!response.ok) throw new Error(`Failed to fetch trending packages: ${response.status}`);
 
                 const data = await response.json();

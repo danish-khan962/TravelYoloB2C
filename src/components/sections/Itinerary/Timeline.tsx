@@ -57,7 +57,9 @@ const Timeline = ({ packageId }: { packageId: string }) => {
       </div>
     );
   if (error)
-    return <p className="text-center text-red-500">Error: {error}</p>;
+    return <p className="text-center text-[#312E29] font-host-grotesk text-lg sm:text-xl italic mt-8">
+  Itinerary plan is not available.
+</p>;
 
   return (
     <div className="relative w-full mt-[36px] sm:mt-[73px]">
